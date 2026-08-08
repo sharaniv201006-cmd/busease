@@ -539,3 +539,48 @@ document.addEventListener('DOMContentLoaded', () => {
     userEmail.forEach(el => el.textContent = user.email || 'student@college.edu');
   }
 });
+
+// --- PWA SERVICE WORKER & APP INSTALL PROMPT ---
+let deferredPwaPrompt = null;
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW Register Error:', err));
+  });
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPwaPrompt = e;
+  showPwaInstallBanner();
+});
+
+function showPwaInstallBanner() {
+  if (document.getElementById('pwa-install-banner')) return;
+  const banner = document.createElement('div');
+  banner.id = 'pwa-install-banner';
+  banner.style.cssText = 'position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 99999; background: #0B2942; border: 1.5px solid #FF8A00; padding: 12px 20px; border-radius: 12px; display: flex; align-items: center; gap: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);';
+  banner.innerHTML = `
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <i class="fas fa-mobile-alt text-orange" style="font-size: 1.4rem;"></i>
+      <div>
+        <div style="font-weight: 700; font-size: 0.9rem; color: #fff;">Install BusEase Mobile App</div>
+        <div style="font-size: 0.75rem; color: #94A9BB;">Get instant 1-tap access on your home screen</div>
+      </div>
+    </div>
+    <button type="button" onclick="triggerPwaInstall()" class="btn-busease-primary" style="padding: 6px 14px; font-size: 0.85rem; height: 36px;">INSTALL NOW</button>
+    <button type="button" onclick="document.getElementById('pwa-install-banner').remove()" style="background: transparent; border: none; color: #94A9BB; cursor: pointer; font-size: 1.2rem;">&times;</button>
+  `;
+  document.body.appendChild(banner);
+}
+
+function triggerPwaInstall() {
+  if (deferredPwaPrompt) {
+    deferredPwaPrompt.prompt();
+    deferredPwaPrompt.userChoice.then((choiceResult) => {
+      deferredPwaPrompt = null;
+      const b = document.getElementById('pwa-install-banner');
+      if (b) b.remove();
+    });
+  }
+}
