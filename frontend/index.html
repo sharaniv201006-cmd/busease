@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BusEase - Smart College Bus Management System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- STICKY TOP HEADER -->
+  <header class="sticky-navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <i class="fas fa-bus-alt"></i>
+        <div>Bus<span class="highlight">Ease</span></div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="search.html">Search Buses</a></li>
+        <li><a href="search.html#routes">Routes</a></li>
+        <li><a href="bookings.html">My Bookings</a></li>
+        <li><a href="future-scope.html">Future Scope</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="login.html" class="btn-busease-outline-orange">
+          <i class="fas fa-user-circle"></i> Login / Sign Up
+        </a>
+        <button class="hamburger-btn" aria-label="Toggle navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero-section">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="section-badge">Next-Gen Campus Transit</div>
+        <h1>Travel Smarter.<br>Travel with <span class="text-orange">BusEase.</span></h1>
+        <p class="subtitle">Discover comfortable, reliable and affordable bus journeys with a seamless booking experience engineered specifically for college students and staff.</p>
+
+        <div class="hero-buttons">
+          <a href="search.html" class="btn-busease-primary">
+            <i class="fas fa-search"></i> SEARCH BUSES
+          </a>
+          <a href="#popular-routes" class="btn-busease-secondary">
+            <i class="fas fa-route"></i> EXPLORE ROUTES
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-visual-wrapper">
+        <div class="bus-ambient-glow"></div>
+        
+        <!-- Modern Futuristic Passenger Bus SVG Graphics -->
+        <svg class="hero-bus-graphic" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="busGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#123F63" />
+              <stop offset="60%" stop-color="#0B2942" />
+              <stop offset="100%" stop-color="#071A2B" />
+            </linearGradient>
+            <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#FF8A00" />
+              <stop offset="100%" stop-color="#FFA834" />
+            </linearGradient>
+            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="10" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+          <!-- Bus Body Base -->
+          <path d="M120 160 C120 120 160 110 240 110 L680 110 C740 110 760 140 760 190 L760 320 C760 350 730 360 690 360 L140 360 C100 360 80 340 80 300 L80 220 Z" fill="url(#busGrad)" stroke="#123F63" stroke-width="4"/>
+          <!-- Orange Accent Stripe -->
+          <path d="M80 270 L760 270 L760 290 L80 290 Z" fill="url(#orangeGrad)" />
+          <!-- Bus Windows -->
+          <rect x="180" y="140" width="100" height="90" rx="10" fill="#071A2B" stroke="#FF8A00" stroke-width="2" opacity="0.9" />
+          <rect x="295" y="140" width="100" height="90" rx="10" fill="#071A2B" stroke="#123F63" stroke-width="2" opacity="0.9" />
+          <rect x="410" y="140" width="100" height="90" rx="10" fill="#071A2B" stroke="#123F63" stroke-width="2" opacity="0.9" />
+          <rect x="525" y="140" width="100" height="90" rx="10" fill="#071A2B" stroke="#123F63" stroke-width="2" opacity="0.9" />
+          <!-- Windshield / Driver Section -->
+          <path d="M640 140 L730 140 C750 140 755 160 755 190 L640 190 Z" fill="#0B2942" stroke="#FF8A00" stroke-width="2" />
+          <!-- Headlights Glow -->
+          <circle cx="750" cy="310" r="16" fill="#FF8A00" filter="url(#glow)" />
+          <circle cx="750" cy="310" r="8" fill="#FFFFFF" />
+          <!-- Wheels -->
+          <circle cx="220" cy="360" r="42" fill="#04101B" stroke="#FF8A00" stroke-width="6" />
+          <circle cx="220" cy="360" r="18" fill="#123F63" />
+          <circle cx="620" cy="360" r="42" fill="#04101B" stroke="#FF8A00" stroke-width="6" />
+          <circle cx="620" cy="360" r="18" fill="#123F63" />
+          <!-- Bus Brand Label -->
+          <text x="340" y="325" fill="#F8FAFC" font-family="Poppins" font-size="28" font-weight="800" letter-spacing="2">BUSEASE</text>
+        </svg>
+
+        <!-- Floating Stat Cards -->
+        <div class="floating-card top-left">
+          <div class="icon-box"><i class="fas fa-route"></i></div>
+          <div>
+            <div class="val">500+</div>
+            <div class="lbl">Campus Routes</div>
+          </div>
+        </div>
+
+        <div class="floating-card bottom-right">
+          <div class="icon-box"><i class="fas fa-chair"></i></div>
+          <div>
+            <div class="val">24 Seats</div>
+            <div class="lbl">Next Departure</div>
+          </div>
+        </div>
+
+        <div class="floating-card middle-left">
+          <div class="icon-box"><i class="fas fa-id-card"></i></div>
+          <div>
+            <div class="val">Campus Pass</div>
+            <div class="lbl">Included for Students</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK BOOKING PANEL OVERLAP -->
+  <div class="booking-panel-container">
+    <div class="quick-booking-card">
+      <form action="search.html" method="GET" class="booking-form-grid">
+        <div class="form-group-custom">
+          <label>From</label>
+          <div class="input-box-wrapper">
+            <i class="fas fa-map-marker-alt"></i>
+            <select name="from" id="searchFrom">
+              <option value="Chennai">Chennai</option>
+              <option value="Pondicherry" selected>Pondicherry</option>
+              <option value="Villupuram">Villupuram</option>
+              <option value="Cuddalore">Cuddalore</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="button" class="swap-btn" title="Swap From/To">
+          <i class="fas fa-exchange-alt"></i>
+        </button>
+
+        <div class="form-group-custom">
+          <label>To</label>
+          <div class="input-box-wrapper">
+            <i class="fas fa-university"></i>
+            <select name="to" id="searchTo">
+              <option value="College Main Gate" selected>College Main Gate</option>
+              <option value="Pondicherry">Pondicherry</option>
+              <option value="Bangalore">Bangalore</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group-custom">
+          <label>Journey Date</label>
+          <div class="input-box-wrapper">
+            <i class="fas fa-calendar-alt"></i>
+            <input type="date" name="date" id="searchDate" value="2026-08-08">
+          </div>
+        </div>
+
+        <div class="form-group-custom">
+          <label>Passengers</label>
+          <div class="input-box-wrapper">
+            <i class="fas fa-user-friends"></i>
+            <select name="passengers">
+              <option value="1">1 Passenger</option>
+              <option value="2">2 Passengers</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group-custom" style="justify-content: flex-end;">
+          <button type="submit" class="btn-busease-primary" style="height: 48px; margin-top: 18px;">
+            SEARCH BUSES <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- POPULAR ROUTES -->
+  <section id="popular-routes" style="padding-top: 40px;">
+    <div class="section-header">
+      <div class="section-badge">Campus Routes</div>
+      <h2 class="section-title">Explore Popular Routes</h2>
+    </div>
+
+    <div class="routes-grid">
+      <div class="route-card">
+        <div class="route-card-img">
+          <i class="fas fa-city"></i>
+          <div class="route-price-tag">AC Sleeper</div>
+        </div>
+        <div class="route-card-body">
+          <h3 class="route-title">Chennai → Bangalore</h3>
+          <div class="route-meta">
+            <span><i class="far fa-clock text-orange"></i> 6h 30m</span>
+            <span><i class="fas fa-bus text-orange"></i> Campus Express</span>
+          </div>
+          <a href="search.html?route=Chennai-Bangalore" class="btn-busease-secondary" style="width: 100%;">
+            VIEW BUSES <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="route-card">
+        <div class="route-card-img">
+          <i class="fas fa-umbrella-beach"></i>
+          <div class="route-price-tag">ECR Express</div>
+        </div>
+        <div class="route-card-body">
+          <h3 class="route-title">Chennai → Pondicherry</h3>
+          <div class="route-meta">
+            <span><i class="far fa-clock text-orange"></i> 3h 15m</span>
+            <span><i class="fas fa-bus text-orange"></i> Campus Express</span>
+          </div>
+          <a href="search.html?route=Chennai-Pondicherry" class="btn-busease-secondary" style="width: 100%;">
+            VIEW BUSES <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="route-card">
+        <div class="route-card-img">
+          <i class="fas fa-mountain"></i>
+          <div class="route-price-tag">Multi-Axle</div>
+        </div>
+        <div class="route-card-body">
+          <h3 class="route-title">Coimbatore → Chennai</h3>
+          <div class="route-meta">
+            <span><i class="far fa-clock text-orange"></i> 7h 45m</span>
+            <span><i class="fas fa-bus text-orange"></i> Campus Coach</span>
+          </div>
+          <a href="search.html?route=Coimbatore-Chennai" class="btn-busease-secondary" style="width: 100%;">
+            VIEW BUSES <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="route-card">
+        <div class="route-card-img">
+          <i class="fas fa-gopuram"></i>
+          <div class="route-price-tag">Deluxe Coach</div>
+        </div>
+        <div class="route-card-body">
+          <h3 class="route-title">Madurai → Chennai</h3>
+          <div class="route-meta">
+            <span><i class="far fa-clock text-orange"></i> 8h 00m</span>
+            <span><i class="fas fa-bus text-orange"></i> Campus Coach</span>
+          </div>
+          <a href="search.html?route=Madurai-Chennai" class="btn-busease-secondary" style="width: 100%;">
+            VIEW BUSES <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY BUSEASE / SERVICES -->
+  <section style="background: rgba(11, 41, 66, 0.4); padding: 80px 0;">
+    <div class="section-header">
+      <div class="section-badge">Why Choose Us</div>
+      <h2 class="section-title">Why Travel With BusEase?</h2>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-num">01</div>
+        <div class="service-icon"><i class="fas fa-ticket-alt"></i></div>
+        <h3>Easy Booking</h3>
+        <p>Book seats in under 2 minutes with instant confirmation and date-based reservation history.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">02</div>
+        <div class="service-icon"><i class="fas fa-id-card"></i></div>
+        <h3>Campus Pass Access</h3>
+        <p>Seamless student ID & bus pass verification for instant gate clearance and zero-hassle travel.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">03</div>
+        <div class="service-icon"><i class="fas fa-chart-pie"></i></div>
+        <h3>Real-Time Availability</h3>
+        <p>Live 40-seat matrix updates showing exact booked vs available seats across all campus buses.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">04</div>
+        <div class="service-icon"><i class="fas fa-bus"></i></div>
+        <h3>Comfortable Travel</h3>
+        <p>Modern air-conditioned fleet with experienced campus drivers and scheduled departure times.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">05</div>
+        <div class="service-icon"><i class="fas fa-qrcode"></i></div>
+        <h3>Digital Tickets</h3>
+        <p>Paperless QR digital tickets stored directly on your student dashboard for easy gate entry.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">06</div>
+        <div class="service-icon"><i class="fas fa-headset"></i></div>
+        <h3>24/7 Support</h3>
+        <p>Dedicated transport staff and real-time emergency alert dispatch system for campus safety.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATISTICS COUNTER BANNER -->
+  <section class="stats-banner">
+    <div class="stats-container">
+      <div class="stat-box">
+        <div class="num">10K+</div>
+        <div class="label">Happy Travelers</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">500+</div>
+        <div class="label">Campus Routes</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">100+</div>
+        <div class="label">Daily Trips</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">4.8/5</div>
+        <div class="label">Average Rating</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section style="padding: 40px 0 80px;">
+    <div class="section-header">
+      <div class="section-badge">Student Reviews</div>
+      <h2 class="section-title">What Our Travelers Say</h2>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        <p class="quote-text">"Booking my daily campus bus through BusEase is incredibly simple. The live seat matrix lets me choose my favorite seat every morning!"</p>
+        <div class="author-info">
+          <div class="author-avatar">AK</div>
+          <div>
+            <div style="font-weight: 700;">Asha Kumar</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">CSE Dept • 3rd Year</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        <p class="quote-text">"The digital QR tickets make entering through the college gate so fast. No more waiting in long manual log queues!"</p>
+        <div class="author-info">
+          <div class="author-avatar">MR</div>
+          <div>
+            <div style="font-weight: 700;">Meera Raman</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">ECE Dept • 2nd Year</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        <p class="quote-text">"When a bus is full, BusEase immediately recommends alternative buses on the same route. Great user experience!"</p>
+        <div class="author-info">
+          <div class="author-avatar">KR</div>
+          <div>
+            <div style="font-weight: 700;">Karthik Raja</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Mech Dept • 4th Year</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="cta-banner">
+    <div class="cta-box">
+      <h2>Your Next Journey Starts Here.</h2>
+      <p>Book your bus today and enjoy a smoother, stress-free campus travel experience with BusEase.</p>
+      <a href="search.html" class="btn-busease-primary">
+        <i class="fas fa-ticket-alt"></i> BOOK NOW
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <a href="index.html" class="brand-logo" style="margin-bottom: 16px; display: inline-flex;">
+          <i class="fas fa-bus-alt"></i>
+          <div>Bus<span class="highlight">Ease</span></div>
+        </a>
+        <p style="font-size: 0.9rem; color: var(--text-muted); max-width: 320px;">
+          Smart College Bus Management & Fleet Tracking Platform designed for modern academic institutions.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="search.html">Search Buses</a></li>
+          <li><a href="search.html#routes">Routes</a></li>
+          <li><a href="bookings.html">My Bookings</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Portals</h4>
+        <ul>
+          <li><a href="login.html?role=student">Student Dashboard</a></li>
+          <li><a href="login.html?role=driver">Driver Control</a></li>
+          <li><a href="login.html?role=staff">Staff Dashboard</a></li>
+          <li><a href="login.html?role=admin">Admin Panel</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>System</h4>
+        <ul>
+          <li><a href="gate.html">Gate Monitoring</a></li>
+          <li><a href="analytics.html">Analytics</a></li>
+          <li><a href="emergency.html">Emergency Alerts</a></li>
+          <li><a href="future-scope.html">Future Scope</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 BusEase Smart Transportation Management System. All rights reserved.</div>
+      <div style="display: flex; gap: 16px;">
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

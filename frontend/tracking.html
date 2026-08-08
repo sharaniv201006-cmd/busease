@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Bus Tracking - BusEase</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body style="background:#0b0f19; overflow:hidden;">
+
+  <!-- Top Navigation Bar -->
+  <nav class="navbar navbar-custom py-2">
+    <div class="container-fluid">
+      <div class="d-flex align-items-center gap-3">
+        <a href="dashboard.html" class="btn btn-outline-light btn-sm rounded-circle" style="width:36px; height:36px; display:flex; align-items:center; justify-content:center;">
+          <i class="fas fa-arrow-left"></i>
+        </a>
+        <div>
+          <h5 class="mb-0 text-white fw-bold" id="trackingBusTitle">Bus 53 - Live Tracking</h5>
+          <div class="small text-muted" style="font-size:0.75rem;">Real-time GPS Telemetry Active</div>
+        </div>
+      </div>
+
+      <div class="d-flex align-items-center gap-2">
+        <span class="status-badge status-on-route">
+          <span class="pulse-dot"></span> Live Navigation Active
+        </span>
+        <a href="dashboard.html" class="btn btn-neon-outline btn-sm">
+          <i class="fas fa-th-large me-1"></i> Dashboard
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Full Screen Map Container -->
+  <div class="map-container-wrapper">
+    
+    <!-- Floating Action Buttons -->
+    <div class="floating-controls">
+      <button onclick="centerBusMap()" class="btn-float" title="Center Bus">
+        <i class="fas fa-crosshairs"></i>
+      </button>
+      <button onclick="alert('Navigation Mode Engaged: Following Route Telemetry')" class="btn-float" title="Navigation">
+        <i class="fas fa-compass"></i>
+      </button>
+      <button onclick="location.reload()" class="btn-float" title="Refresh">
+        <i class="fas fa-sync-alt"></i>
+      </button>
+      <a href="dashboard.html" class="btn-float text-decoration-none" title="Back to Dashboard">
+        <i class="fas fa-home"></i>
+      </a>
+    </div>
+
+    <!-- Leaflet Map Element -->
+    <div id="map"></div>
+
+    <!-- Bottom Sliding Telemetry & Timeline Panel -->
+    <div class="bottom-telemetry-panel">
+      <div class="telemetry-grid">
+        <div class="telemetry-item">
+          <span class="label">Vehicle</span>
+          <span class="val highlight" id="telemetryBusNo">Bus 53</span>
+        </div>
+        <div class="telemetry-item">
+          <span class="label">Driver Profile</span>
+          <span class="val" id="telemetryDriver">Murugan (8 Yrs Exp)</span>
+        </div>
+        <div class="telemetry-item">
+          <span class="label">Speed</span>
+          <span class="val highlight" id="telemetrySpeed">42 km/h</span>
+        </div>
+        <div class="telemetry-item">
+          <span class="label">Distance Remaining</span>
+          <span class="val" id="telemetryDistance">3.2 km</span>
+        </div>
+        <div class="telemetry-item">
+          <span class="label">ETA College</span>
+          <span class="val highlight" id="telemetryETA">8 min</span>
+        </div>
+        <div class="telemetry-item">
+          <span class="label">Current Stop</span>
+          <span class="val" id="telemetryCurrentStop">ECR Toll Gate</span>
+        </div>
+        <div class="telemetry-item">
+          <span class="label">Next Stop</span>
+          <span class="val highlight" id="telemetryNextStop">College Main Gate</span>
+        </div>
+      </div>
+
+      <!-- Route Timeline Stepper -->
+      <div class="route-timeline">
+        <div class="timeline-stop passed">
+          <div class="timeline-dot"></div>
+          <span class="stop-name">Pondicherry</span>
+        </div>
+        <div class="timeline-stop passed">
+          <div class="timeline-dot"></div>
+          <span class="stop-name">Gorimedu</span>
+        </div>
+        <div class="timeline-stop current">
+          <div class="timeline-dot"></div>
+          <span class="stop-name">ECR Toll Gate</span>
+        </div>
+        <div class="timeline-stop">
+          <div class="timeline-dot"></div>
+          <span class="stop-name">College Main Gate</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/bootstrap.bundle.min.js"></script>
+  <!-- BusEase Engine -->
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard - BusEase</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- STICKY TOP NAVBAR -->
+  <header class="sticky-navbar">
+    <div class="nav-container">
+      <a href="student.html" class="brand-logo">
+        <i class="fas fa-bus-alt text-orange"></i>
+        <div>Bus<span class="highlight">Ease</span></div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="student.html" class="active"><i class="fas fa-home me-1"></i> Dashboard</a></li>
+        <li><a href="search.html"><i class="fas fa-search me-1"></i> Search Buses</a></li>
+        <li><a href="bookings.html"><i class="fas fa-ticket-alt me-1"></i> My Bookings</a></li>
+        <li><a href="notifications.html"><i class="fas fa-bell me-1"></i> Notifications</a></li>
+        <li><a href="future-scope.html"><i class="fas fa-brain me-1"></i> Future Scope</a></li>
+      </ul>
+
+      <div class="user-profile">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 0.9rem; font-weight: 600; color: var(--color-orange);">
+            <i class="fas fa-user-circle me-1"></i> <span class="active-user-name">Asha Kumar</span>
+          </span>
+          <button type="button" onclick="BusEaseState.logout()" class="btn-busease-outline-orange" style="padding: 6px 14px; font-size: 0.85rem;" title="Logout">
+            <i class="fas fa-sign-out-alt me-1"></i> Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- DASHBOARD MAIN CONTAINER -->
+  <main class="busease-container">
+
+    <!-- WELCOME HERO BANNER CARD -->
+    <div class="glass-card" style="padding: 32px; margin-bottom: 32px; border: 1px solid var(--border-orange); background: linear-gradient(135deg, rgba(13,41,67,0.9), rgba(8,29,50,0.95)); box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 25px rgba(255,138,0,0.15);">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px;">
+        <div>
+          <div class="section-badge" style="margin-bottom: 10px;">
+            <i class="fas fa-shield-alt me-1"></i> Campus Transit Control Center
+          </div>
+          <h1 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 8px;">
+            Welcome back, <span class="text-orange active-user-name">Asha Kumar</span>! 👋
+          </h1>
+          <div style="display: flex; align-items: center; gap: 16px; font-size: 0.92rem; color: var(--text-muted);">
+            <span><i class="fas fa-id-card text-orange me-1"></i> Register No: <strong class="text-white active-user-regno">23AD001</strong></span>
+            <span><i class="fas fa-graduation-cap text-orange me-1"></i> Student Portal</span>
+            <span><i class="fas fa-calendar-day text-orange me-1"></i> Today: <strong class="text-white">08-08-2026</strong></span>
+          </div>
+        </div>
+
+        <div>
+          <a href="search.html" class="btn-busease-primary" style="height: 48px; padding: 0 28px; font-size: 1rem;">
+            <i class="fas fa-plus-circle me-1"></i> BOOK NEW JOURNEY
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAT METRIC CARDS -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-bottom: 40px;">
+      
+      <div class="glass-card" style="padding: 24px; display: flex; align-items: center; gap: 18px; border: 1px solid var(--border-orange);">
+        <div style="width: 54px; height: 54px; border-radius: var(--radius-md); background: rgba(255, 138, 0, 0.15); border: 1.5px solid var(--color-orange); color: var(--color-orange); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+          <i class="fas fa-ticket-alt"></i>
+        </div>
+        <div>
+          <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Active Booking</div>
+          <div style="font-size: 1.8rem; font-weight: 800; color: var(--text-white);" id="statActive">1</div>
+        </div>
+      </div>
+
+      <div class="glass-card" style="padding: 24px; display: flex; align-items: center; gap: 18px; border: 1px solid var(--border-blue);">
+        <div style="width: 54px; height: 54px; border-radius: var(--radius-md); background: rgba(18, 63, 99, 0.4); border: 1.5px solid var(--color-blue); color: #60a5fa; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div>
+          <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Completed Trips</div>
+          <div style="font-size: 1.8rem; font-weight: 800; color: var(--text-white);" id="statCompleted">1</div>
+        </div>
+      </div>
+
+      <div class="glass-card" style="padding: 24px; display: flex; align-items: center; gap: 18px; border: 1px solid rgba(239, 68, 68, 0.4);">
+        <div style="width: 54px; height: 54px; border-radius: var(--radius-md); background: rgba(239, 68, 68, 0.15); border: 1.5px solid rgba(239, 68, 68, 0.5); color: #f87171; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+          <i class="fas fa-times-circle"></i>
+        </div>
+        <div>
+          <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Cancelled Trips</div>
+          <div style="font-size: 1.8rem; font-weight: 800; color: var(--text-white);" id="statCancelled">1</div>
+        </div>
+      </div>
+
+      <div class="glass-card" style="padding: 24px; display: flex; align-items: center; gap: 18px; border: 1px solid var(--border-subtle);">
+        <div style="width: 54px; height: 54px; border-radius: var(--radius-md); background: rgba(148, 169, 187, 0.15); border: 1.5px solid var(--border-subtle); color: var(--text-white); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+          <i class="fas fa-route"></i>
+        </div>
+        <div>
+          <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Total Journeys</div>
+          <div style="font-size: 1.8rem; font-weight: 800; color: var(--text-white);" id="statTotal">3</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CURRENT ACTIVE JOURNEY SECTION -->
+    <div style="margin-bottom: 40px;">
+      <div style="font-size: 1.2rem; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
+        <i class="fas fa-bus text-orange"></i> Current Active Journey Pass
+      </div>
+
+      <div id="activeBookingCardContainer">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- NEXT DEPARTING BUSES OVERVIEW -->
+    <div style="margin-bottom: 40px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+        <div style="font-size: 1.2rem; font-weight: 700;">
+          <i class="fas fa-clock text-orange me-2"></i> Next Departing Campus Buses
+        </div>
+        <a href="search.html" class="btn-busease-secondary">View All Buses →</a>
+      </div>
+
+      <div class="custom-table-container">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Bus Code</th>
+              <th>Bus Name</th>
+              <th>Route</th>
+              <th>Departure Time</th>
+              <th>Available Seats</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="studentBusesTable">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderStudentDashboard();
+    });
+
+    function renderStudentDashboard() {
+      const bookings = BusEaseState.getBookings();
+      const activeBookings = bookings.filter(b => b.status === 'ACTIVE');
+      const completedBookings = bookings.filter(b => b.status === 'COMPLETED');
+      const cancelledBookings = bookings.filter(b => b.status === 'CANCELLED');
+
+      document.getElementById('statActive').textContent = activeBookings.length;
+      document.getElementById('statCompleted').textContent = completedBookings.length;
+      document.getElementById('statCancelled').textContent = cancelledBookings.length;
+      document.getElementById('statTotal').textContent = bookings.length;
+
+      const container = document.getElementById('activeBookingCardContainer');
+      if (activeBookings.length > 0) {
+        const b = activeBookings[0];
+        container.innerHTML = `
+          <div class="ticket-wrapper" style="max-width: 100%;">
+            <div class="ticket-header">
+              <div>
+                <span class="badge-status badge-active"><i class="fas fa-dot-circle"></i> ${b.status}</span>
+                <div style="font-weight: 800; font-size: 1.25rem; margin-top: 6px;">${b.bus_id} - ${b.bus_name || 'AC Express'}</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Booking Code</div>
+                <div style="font-weight: 800; color: var(--color-orange); font-size: 1.2rem;">${b.id}</div>
+              </div>
+            </div>
+            <div class="ticket-body">
+              <div class="ticket-row">
+                <div>
+                  <div class="ticket-label">Route</div>
+                  <div class="ticket-val">${b.route}</div>
+                </div>
+                <div>
+                  <div class="ticket-label">Journey Date</div>
+                  <div class="ticket-val" style="color: var(--color-orange);">${b.journey_date}</div>
+                </div>
+              </div>
+              <div class="ticket-row">
+                <div>
+                  <div class="ticket-label">Seat Number</div>
+                  <div class="ticket-val" style="font-size: 1.5rem; color: var(--color-orange);">${b.seat_number}</div>
+                </div>
+                <div>
+                  <div class="ticket-label">Cancellation Deadline</div>
+                  <div class="ticket-val">${b.cancellation_deadline}</div>
+                </div>
+              </div>
+              <div style="display: flex; gap: 14px; margin-top: 14px;">
+                <a href="ticket.html?id=${b.id}" class="btn-busease-primary" style="flex: 1;">
+                  <i class="fas fa-ticket-alt me-1"></i> VIEW DIGITAL TICKET
+                </a>
+                <button type="button" class="btn-busease-secondary" onclick="handleCancel('${b.id}')" style="color: #f87171; border-color: rgba(239,68,68,0.4);">
+                  <i class="fas fa-times me-1"></i> CANCEL BOOKING
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="glass-card" style="padding: 36px; text-align: center; color: var(--text-muted);">
+            <i class="fas fa-bus-alt" style="font-size: 2.8rem; margin-bottom: 12px; opacity: 0.5; color: var(--color-orange);"></i>
+            <h3 style="font-size: 1.2rem; color: var(--text-white); margin-bottom: 6px;">No Active Reservations</h3>
+            <p style="margin-bottom: 16px;">You currently have no active bus reservations. Search available routes to book your seat.</p>
+            <a href="search.html" class="btn-busease-primary">Browse Available Buses</a>
+          </div>
+        `;
+      }
+
+      // Populate buses overview
+      const buses = BusEaseState.getBuses().slice(0, 4);
+      const busesTbody = document.getElementById('studentBusesTable');
+      busesTbody.innerHTML = buses.map(bus => `
+        <tr>
+          <td><strong class="text-orange">${bus.id}</strong></td>
+          <td>${bus.name}</td>
+          <td>${bus.route}</td>
+          <td><i class="far fa-clock text-orange me-1"></i> ${bus.departure}</td>
+          <td>
+            <span style="font-weight: 700; color: ${bus.available > 0 ? '#10b981' : '#f87171'};">
+              ${bus.available} / ${bus.capacity} seats
+            </span>
+          </td>
+          <td><span class="badge-status badge-active">${bus.status}</span></td>
+          <td>
+            ${bus.available > 0 ? 
+              `<a href="seats.html?bus=${bus.id}" class="btn-busease-primary" style="padding: 0 16px; height: 36px; font-size: 0.82rem;">Select Seat</a>` : 
+              `<span class="badge-status badge-cancelled">FULL</span>`
+            }
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function handleCancel(id) {
+      if (confirm(`Are you sure you want to cancel reservation ${id}? The seat will be released.`)) {
+        cancelReservation(id);
+        renderStudentDashboard();
+      }
+    }
+  </script>
+</body>
+</html>

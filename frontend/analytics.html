@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics - BusEase Smart Transportation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="sticky-navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <i class="fas fa-bus-alt"></i>
+        <div>Bus<span class="highlight">Ease</span></div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="admin.html">Admin Panel</a></li>
+        <li><a href="staff.html">Staff Control</a></li>
+        <li><a href="analytics.html" class="active">Analytics</a></li>
+        <li><a href="gate.html">Gate Monitor</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="admin.html" class="btn-busease-secondary">
+          <i class="fas fa-arrow-left me-1"></i> Admin Dashboard
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div style="max-width: 1320px; margin: 40px auto; padding: 0 24px;">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px;">
+      <div>
+        <h1 style="font-size: 2rem; margin-bottom: 4px;"><i class="fas fa-chart-bar text-orange me-2"></i> Transportation & Fleet Analytics</h1>
+        <p style="color: var(--text-muted);">Real-time trends, daily reservation volume, seat occupancy rates, and cancellation metrics</p>
+      </div>
+    </div>
+
+    <!-- CHARTS GRID -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 40px;">
+      
+      <!-- DAILY RESERVATIONS BAR CHART -->
+      <div class="glass-card" style="padding: 28px;">
+        <h3 style="font-size: 1.2rem; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+          <span><i class="fas fa-calendar-week text-orange me-2"></i> Daily Reservations Volume</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">This Week</span>
+        </h3>
+
+        <div style="display: flex; align-items: flex-end; justify-content: space-between; height: 220px; padding-top: 20px; border-bottom: 1px solid var(--border-subtle);">
+          <div style="display: flex; flex-direction: column; align-items: center; width: 12%;">
+            <span style="font-size: 0.75rem; font-weight: 700; color: var(--color-orange); margin-bottom: 6px;">42</span>
+            <div style="height: 100px; width: 100%; background: var(--color-blue); border-radius: 6px 6px 0 0;"></div>
+            <span style="font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">Mon</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; align-items: center; width: 12%;">
+            <span style="font-size: 0.75rem; font-weight: 700; color: var(--color-orange); margin-bottom: 6px;">55</span>
+            <div style="height: 130px; width: 100%; background: var(--color-blue); border-radius: 6px 6px 0 0;"></div>
+            <span style="font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">Tue</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; align-items: center; width: 12%;">
+            <span style="font-size: 0.75rem; font-weight: 700; color: var(--color-orange); margin-bottom: 6px;">68</span>
+            <div style="height: 155px; width: 100%; background: var(--color-blue); border-radius: 6px 6px 0 0;"></div>
+            <span style="font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">Wed</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; align-items: center; width: 12%;">
+            <span style="font-size: 0.75rem; font-weight: 700; color: var(--color-orange); margin-bottom: 6px;">74</span>
+            <div style="height: 170px; width: 100%; background: var(--color-blue); border-radius: 6px 6px 0 0;"></div>
+            <span style="font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">Thu</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; align-items: center; width: 12%;">
+            <span style="font-size: 0.75rem; font-weight: 700; color: var(--color-orange); margin-bottom: 6px;">82</span>
+            <div style="height: 190px; width: 100%; background: var(--color-orange); border-radius: 6px 6px 0 0; box-shadow: 0 0 14px var(--color-orange-glow);"></div>
+            <span style="font-size: 0.75rem; color: var(--color-orange); font-weight: 700; margin-top: 8px;">Fri</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; align-items: center; width: 12%;">
+            <span style="font-size: 0.75rem; font-weight: 700; color: var(--color-orange); margin-bottom: 6px;">61</span>
+            <div style="height: 140px; width: 100%; background: var(--color-blue); border-radius: 6px 6px 0 0;"></div>
+            <span style="font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">Sat</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; align-items: center; width: 12%;">
+            <span style="font-size: 0.75rem; font-weight: 700; color: var(--color-orange); margin-bottom: 6px;">45</span>
+            <div style="height: 110px; width: 100%; background: var(--color-blue); border-radius: 6px 6px 0 0;"></div>
+            <span style="font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">Sun</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BUS UTILIZATION PERCENTAGES -->
+      <div class="glass-card" style="padding: 28px;">
+        <h3 style="font-size: 1.2rem; margin-bottom: 20px;"><i class="fas fa-bus text-orange me-2"></i> Fleet Utilization %</h3>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 4px;">
+              <span>BUS-08 (Pondicherry Direct)</span>
+              <span style="font-weight: 800; color: #f87171;">100% (FULL)</span>
+            </div>
+            <div style="height: 10px; background: rgba(7,26,43,0.8); border-radius: 5px; overflow: hidden;">
+              <div style="width: 100%; height: 100%; background: #f87171;"></div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 4px;">
+              <span>BUS-02 (Villupuram Liner)</span>
+              <span style="font-weight: 800; color: #10b981;">87%</span>
+            </div>
+            <div style="height: 10px; background: rgba(7,26,43,0.8); border-radius: 5px; overflow: hidden;">
+              <div style="width: 87%; height: 100%; background: #10b981;"></div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 4px;">
+              <span>BUS-05 (AC Express)</span>
+              <span style="font-weight: 800; color: var(--color-orange);">70%</span>
+            </div>
+            <div style="height: 10px; background: rgba(7,26,43,0.8); border-radius: 5px; overflow: hidden;">
+              <div style="width: 70%; height: 100%; background: var(--color-orange);"></div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 4px;">
+              <span>BUS-01 (Campus Shuttle)</span>
+              <span style="font-weight: 800; color: #60a5fa;">62%</span>
+            </div>
+            <div style="height: 10px; background: rgba(7,26,43,0.8); border-radius: 5px; overflow: hidden;">
+              <div style="width: 62%; height: 100%; background: #60a5fa;"></div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 4px;">
+              <span>BUS-12 (Tindivanam Coach)</span>
+              <span style="font-weight: 800; color: var(--text-muted);">38%</span>
+            </div>
+            <div style="height: 10px; background: rgba(7,26,43,0.8); border-radius: 5px; overflow: hidden;">
+              <div style="width: 38%; height: 100%; background: var(--color-blue);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SEAT OCCUPANCY & CANCELLATION METRICS -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+      
+      <div class="glass-card" style="padding: 28px; text-align: center;">
+        <h3 style="font-size: 1.1rem; margin-bottom: 16px;"><i class="fas fa-chair text-orange me-2"></i> Overall Seat Occupancy Rate</h3>
+        <div style="font-size: 3.5rem; font-weight: 800; color: var(--color-orange); margin-bottom: 6px;">78%</div>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Average peak-hour campus occupancy across all 15 active buses</p>
+      </div>
+
+      <div class="glass-card" style="padding: 28px;">
+        <h3 style="font-size: 1.1rem; margin-bottom: 16px;"><i class="fas fa-exchange-alt text-orange me-2"></i> Cancellation & Status Distribution</h3>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+            <span>Active Reservations</span>
+            <span style="font-weight: 700; color: #10b981;">75%</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+            <span>Completed Journeys</span>
+            <span style="font-weight: 700; color: #60a5fa;">20%</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+            <span>Cancelled Bookings</span>
+            <span style="font-weight: 700; color: #f87171;">5%</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

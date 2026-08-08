@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - BusEase Control Center</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="sticky-navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <i class="fas fa-bus-alt"></i>
+        <div>Bus<span class="highlight">Ease</span></div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="admin.html" class="active">System Admin</a></li>
+        <li><a href="analytics.html">Analytics</a></li>
+        <li><a href="gate.html">Gate Control</a></li>
+        <li><a href="emergency.html">Emergency Hub</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div class="user-badge">
+          <div class="user-avatar" style="background: #ef4444; color: #fff;"><i class="fas fa-user-shield"></i></div>
+          <div>
+            <div style="font-size: 0.85rem; font-weight: 700;">System Administrator</div>
+            <div style="font-size: 0.7rem; color: var(--color-orange);">Full System Control</div>
+          </div>
+        </div>
+        <a href="login.html" class="btn-busease-secondary" style="padding: 8px 14px;" onclick="BusEaseState.logout()">
+          <i class="fas fa-sign-out-alt"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div style="max-width: 1320px; margin: 40px auto; padding: 0 24px;">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px;">
+      <div>
+        <h1 style="font-size: 2rem; margin-bottom: 4px;"><i class="fas fa-user-shield text-orange me-2"></i> Executive Admin Control Center</h1>
+        <p style="color: var(--text-muted);">Overview of college fleet metrics, active bookings, drivers, routes, and emergency controls</p>
+      </div>
+      <div style="display: flex; gap: 12px;">
+        <a href="analytics.html" class="btn-busease-primary">
+          <i class="fas fa-chart-line me-1"></i> VIEW DETAILED ANALYTICS
+        </a>
+        <button type="button" class="btn-busease-secondary" style="border-color: #f87171; color: #f87171;" onclick="resetDemoData()">
+          <i class="fas fa-undo me-1"></i> RESET DEMO DATA
+        </button>
+      </div>
+    </div>
+
+    <!-- ADMIN SYSTEM COUNTERS -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 36px;">
+      <div class="glass-card" style="padding: 20px;">
+        <div style="font-size: 0.8rem; color: var(--text-muted);">Total Students</div>
+        <div style="font-size: 1.8rem; font-weight: 800; color: var(--text-white);">50 Students</div>
+      </div>
+      <div class="glass-card" style="padding: 20px;">
+        <div style="font-size: 0.8rem; color: var(--text-muted);">Total Buses</div>
+        <div style="font-size: 1.8rem; font-weight: 800; color: var(--color-orange);" id="admBuses">15 Buses</div>
+      </div>
+      <div class="glass-card" style="padding: 20px;">
+        <div style="font-size: 0.8rem; color: var(--text-muted);">Total Drivers</div>
+        <div style="font-size: 1.8rem; font-weight: 800; color: #60a5fa;">10 Drivers</div>
+      </div>
+      <div class="glass-card" style="padding: 20px;">
+        <div style="font-size: 0.8rem; color: var(--text-muted);">Active Routes</div>
+        <div style="font-size: 1.8rem; font-weight: 800; color: #10b981;">10 Routes</div>
+      </div>
+      <div class="glass-card" style="padding: 20px;">
+        <div style="font-size: 0.8rem; color: var(--text-muted);">Total Reservations</div>
+        <div style="font-size: 1.8rem; font-weight: 800; color: var(--color-orange);" id="admReservations">100+</div>
+      </div>
+    </div>
+
+    <!-- SYSTEM OVERVIEW ROW -->
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 32px; margin-bottom: 36px;">
+      
+      <!-- RECENT SYSTEM BOOKINGS MONITOR -->
+      <div class="glass-card" style="padding: 28px;">
+        <h3 style="font-size: 1.2rem; margin-bottom: 16px;"><i class="fas fa-list text-orange me-2"></i> System Reservations Log</h3>
+        <div class="custom-table-container">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Student</th>
+                <th>Bus</th>
+                <th>Seat</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="adminBookingsTable">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BUS FLEET UTILIZATION SUMMARY -->
+      <div class="glass-card" style="padding: 28px;">
+        <h3 style="font-size: 1.2rem; margin-bottom: 20px;"><i class="fas fa-chart-pie text-orange me-2"></i> Fleet Utilization</h3>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px;">
+              <span>BUS-05 (ECR Express)</span>
+              <span class="text-orange" style="font-weight: 700;">70% Occupied</span>
+            </div>
+            <div style="height: 8px; background: var(--bg-deep); border-radius: 4px; overflow: hidden;">
+              <div style="width: 70%; height: 100%; background: var(--color-orange);"></div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px;">
+              <span>BUS-08 (Pondicherry Direct)</span>
+              <span style="font-weight: 700; color: #f87171;">100% FULL</span>
+            </div>
+            <div style="height: 8px; background: var(--bg-deep); border-radius: 4px; overflow: hidden;">
+              <div style="width: 100%; height: 100%; background: #f87171;"></div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px;">
+              <span>BUS-02 (Villupuram)</span>
+              <span style="font-weight: 700; color: #10b981;">87% Occupied</span>
+            </div>
+            <div style="height: 8px; background: var(--bg-deep); border-radius: 4px; overflow: hidden;">
+              <div style="width: 87%; height: 100%; background: #10b981;"></div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px;">
+              <span>BUS-01 (Campus Shuttle)</span>
+              <span style="font-weight: 700; color: #60a5fa;">62% Occupied</span>
+            </div>
+            <div style="height: 8px; background: var(--bg-deep); border-radius: 4px; overflow: hidden;">
+              <div style="width: 62%; height: 100%; background: #60a5fa;"></div>
+            </div>
+          </div>
+        </div>
+
+        <a href="analytics.html" class="btn-busease-secondary" style="width: 100%; margin-top: 24px; justify-content: center;">
+          Full Analytics Report →
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderAdminDashboard();
+    });
+
+    function renderAdminDashboard() {
+      const bookings = BusEaseState.getBookings();
+      const buses = BusEaseState.getBuses();
+
+      document.getElementById('admBuses').textContent = `${buses.length} Buses`;
+      document.getElementById('admReservations').textContent = `${bookings.length} Logged`;
+
+      const tbody = document.getElementById('adminBookingsTable');
+      tbody.innerHTML = bookings.map(b => `
+        <tr>
+          <td><strong class="text-orange">${b.id}</strong></td>
+          <td>${b.student_name || 'Asha Kumar'}</td>
+          <td>${b.bus_id}</td>
+          <td><span style="font-weight: 700; color: var(--color-orange);">${b.seat_number}</span></td>
+          <td>${b.journey_date}</td>
+          <td><span class="badge-status badge-${b.status.toLowerCase()}">${b.status}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function resetDemoData() {
+      if (confirm('Reset prototype state back to initial seed data?')) {
+        localStorage.clear();
+        showToast('Demo data restored!', 'info');
+        setTimeout(() => location.reload(), 500);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Ticket - BusEase</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="sticky-navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <i class="fas fa-bus-alt"></i>
+        <div>Bus<span class="highlight">Ease</span></div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="student.html">Dashboard</a></li>
+        <li><a href="bookings.html">My Bookings</a></li>
+        <li><a href="search.html">Search Buses</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="bookings.html" class="btn-busease-secondary">
+          <i class="fas fa-ticket-alt me-1"></i> All Bookings
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="busease-container-sm">
+
+    <div style="text-align: center; margin-bottom: 24px;">
+      <div class="section-badge"><i class="fas fa-check-circle me-1"></i> Confirmed Ticket</div>
+      <h1 style="font-size: 2rem;">Digital Boarding Pass</h1>
+      <p style="color: var(--text-muted);">Official Digital Bus Boarding Pass</p>
+    </div>
+
+    <!-- TICKET CONTAINER -->
+    <div class="ticket-wrapper" id="ticketPrintArea">
+      <div class="ticket-header">
+        <div>
+          <a href="index.html" class="brand-logo" style="font-size: 1.3rem;">
+            <i class="fas fa-bus-alt"></i>
+            <div>Bus<span class="highlight">Ease</span></div>
+          </a>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Campus Transit Pass</div>
+        </div>
+        <div style="text-align: right;">
+          <span class="badge-status badge-active" id="ticketStatusBadge">ACTIVE</span>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Booking Code</div>
+          <div style="font-weight: 800; color: var(--color-orange); font-size: 1.1rem;" id="ticketId">RES-901</div>
+        </div>
+      </div>
+
+      <div class="ticket-body">
+        
+        <div style="height: 12px;"></div>
+
+        <div class="ticket-row">
+          <div>
+            <div class="ticket-label">Student Name</div>
+            <div class="ticket-val" id="ticketStudent">Asha Kumar</div>
+          </div>
+          <div>
+            <div class="ticket-label">Register Number</div>
+            <div class="ticket-val" id="ticketRegNo">23AD001</div>
+          </div>
+        </div>
+
+        <div class="ticket-row">
+          <div>
+            <div class="ticket-label">Bus Details</div>
+            <div class="ticket-val" id="ticketBus">BUS-05 (AC Express)</div>
+          </div>
+          <div>
+            <div class="ticket-label">Seat Number</div>
+            <div class="ticket-val" style="font-size: 1.5rem; color: var(--color-orange);" id="ticketSeat">A12</div>
+          </div>
+        </div>
+
+        <div class="ticket-row">
+          <div>
+            <div class="ticket-label">Route</div>
+            <div class="ticket-val" id="ticketRoute">Pondicherry → College</div>
+          </div>
+          <div>
+            <div class="ticket-label">Journey Date</div>
+            <div class="ticket-val" style="color: var(--color-orange);" id="ticketDate">2026-08-08</div>
+          </div>
+        </div>
+
+        <div class="ticket-row">
+          <div>
+            <div class="ticket-label">Departure Time</div>
+            <div class="ticket-val" id="ticketDep">08:00 AM</div>
+          </div>
+          <div>
+            <div class="ticket-label">Boarding Stop</div>
+            <div class="ticket-val">Main Bus Station</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TICKET ACTIONS -->
+    <div style="display: flex; gap: 16px; margin-top: 24px; justify-content: center;">
+      <button type="button" class="btn-busease-primary" onclick="downloadTicketPdf()">
+        <i class="fas fa-download me-1"></i> DOWNLOAD TICKET
+      </button>
+      <a href="bookings.html" class="btn-busease-secondary">
+        <i class="fas fa-list me-1"></i> VIEW MY BOOKINGS
+      </a>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const bookingId = urlParams.get('id');
+      const bookings = BusEaseState.getBookings();
+      const booking = bookings.find(b => b.id === bookingId) || bookings[0];
+
+      if (booking) {
+        document.getElementById('ticketId').textContent = booking.id;
+        document.getElementById('ticketStudent').textContent = booking.student_name || 'Asha Kumar';
+        document.getElementById('ticketRegNo').textContent = booking.student_id || '23AD001';
+        document.getElementById('ticketBus').textContent = `${booking.bus_id} (${booking.bus_name || 'Campus Express'})`;
+        document.getElementById('ticketSeat').textContent = booking.seat_number;
+        document.getElementById('ticketRoute').textContent = booking.route;
+        document.getElementById('ticketDate').textContent = booking.journey_date;
+        document.getElementById('ticketStatusBadge').textContent = booking.status;
+        document.getElementById('ticketStatusBadge').className = `badge-status badge-${booking.status.toLowerCase()}`;
+      }
+    });
+
+    function downloadTicketPdf() {
+      showToast('Downloading ticket copy...', 'success');
+      window.print();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+
+            <option value="">-- Select Bus --</option>
+        </select>
+
+        <h2>Seat Reservation</h2>
+
+        <div id="seats" class="seats"></div>
+
+        <button type="button" onclick="reserveSeat()">Reserve Seat</button>
+
+        <p id="message"></p>
+        <p id="error"></p>
+
+    </div>
+
+    <div class="alternative">
+        <h2>Alternative Bus</h2>
+        <p id="alternativeBus">
+            Select a bus to check availability.
+        </p>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+<script>
+    document.getElementById("user").innerText =
+        localStorage.getItem("studentName") || "Student";
+</script>
+
+</body>
+</html>

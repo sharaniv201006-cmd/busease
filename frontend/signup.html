@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - BusEase Smart Transportation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+  <header class="login-header">
+    <a href="login.html" class="brand-logo">
+      <i class="fas fa-bus-alt text-orange"></i>
+      <span>Bus<span class="highlight">Ease</span></span>
+    </a>
+    <a href="login.html" class="back-link"><i class="fas fa-sign-in-alt me-1"></i> Back to Login</a>
+  </header>
+
+  <div class="login-page">
+    <div class="login-visual">
+      <div class="visual-content">
+        <div class="section-badge" style="margin-bottom: 12px;"><i class="fas fa-shield-alt me-1"></i> Smart Campus Mobility</div>
+        <h1>Next-Gen College Bus Portal</h1>
+        <p>Register today to reserve seats, track live routes, and access your digital campus transit pass effortlessly.</p>
+      </div>
+      
+      <!-- Modern Bus Vector Artwork -->
+      <svg class="bus-illustration" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="busGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0B3A66" />
+            <stop offset="60%" stop-color="#061B35" />
+          </linearGradient>
+          <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#FF9D00" />
+            <stop offset="100%" stop-color="#FFB84D" />
+          </linearGradient>
+        </defs>
+        <path d="M120 160 C120 120 160 110 240 110 L680 110 C740 110 760 140 760 190 L760 320 C760 350 730 360 690 360 L140 360 C100 360 80 340 80 300 L80 220 Z" fill="url(#busGrad)" stroke="#0B3A66" stroke-width="4"/>
+        <path d="M80 270 L760 270 L760 290 L80 290 Z" fill="url(#orangeGrad)" />
+      </svg>
+    </div>
+
+    <div class="login-form">
+      <div class="login-card glass-panel" style="border: 1px solid var(--border-orange); box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 25px rgba(255,138,0,0.15);">
+        <div style="text-align: center; margin-bottom: 24px;">
+          <div class="section-badge" style="margin-bottom: 8px;">New Account Registration</div>
+          <h2 style="font-size: 1.8rem; margin-bottom: 6px;">Sign Up for BusEase</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Create your student transport account</p>
+        </div>
+
+        <!-- SIGN UP FORM -->
+        <form id="signUpForm" onsubmit="submitSignUp(event)">
+          <div class="form-group">
+            <label><i class="fas fa-user text-orange me-1"></i> Full Name</label>
+            <div class="input-box-wrapper">
+              <input type="text" id="signupName" placeholder="Enter your full name (e.g. Asha Kumar)" required>
+            </div>
+          </div>
+
+          <!-- IDENTIFICATION TYPE RADIO SELECTOR -->
+          <div class="form-group" style="margin-bottom: 18px;">
+            <label style="margin-bottom: 8px;"><i class="fas fa-id-card-alt text-orange me-1"></i> Preferred Identification Method</label>
+            <div style="display: flex; gap: 12px;">
+              <label class="radio-option-card" id="radioOptRegNo" onclick="selectIdType('regNo')" style="flex: 1; padding: 10px 14px; background: rgba(255, 138, 0, 0.15); border: 1.5px solid var(--color-orange); border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; gap: 10px; transition: var(--transition);">
+                <input type="radio" name="idType" value="regNo" checked style="accent-color: var(--color-orange); cursor: pointer;">
+                <span style="font-size: 0.88rem; font-weight: 700; color: var(--text-white);">Register No.</span>
+              </label>
+
+              <label class="radio-option-card" id="radioOptAdmNo" onclick="selectIdType('admNo')" style="flex: 1; padding: 10px 14px; background: rgba(7, 26, 43, 0.6); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; gap: 10px; transition: var(--transition);">
+                <input type="radio" name="idType" value="admNo" style="accent-color: var(--color-orange); cursor: pointer;">
+                <span style="font-size: 0.88rem; font-weight: 600; color: var(--text-muted);">Admission No.</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label id="idTypeLabel"><i class="fas fa-user-tag text-orange me-1"></i> Register Number</label>
+            <div class="input-box-wrapper">
+              <input type="text" id="signupRegNo" placeholder="Enter register number (e.g. 23AD005)" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fas fa-envelope text-orange me-1"></i> College Email</label>
+            <div class="input-box-wrapper">
+              <input type="email" id="signupEmail" placeholder="Enter email (e.g. asha@college.edu)" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fas fa-lock text-orange me-1"></i> Password</label>
+            <div class="input-box-wrapper">
+              <input type="password" id="signupPassword" placeholder="Create password" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fas fa-shield-alt text-orange me-1"></i> Confirm Password</label>
+            <div class="input-box-wrapper">
+              <input type="password" id="signupConfirmPassword" placeholder="Confirm password" required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-busease-primary btn-login" style="margin-top: 12px; height: 46px; font-size: 1rem; width: 100%;">
+            CREATE ACCOUNT <i class="fas fa-arrow-right me-1"></i>
+          </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 20px; font-size: 0.92rem; color: var(--text-muted);">
+          Already have an account? <a href="login.html" style="color: var(--color-orange); font-weight: 700; text-decoration: none;">Login here</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    function selectIdType(type) {
+      const regLabel = document.getElementById('idTypeLabel');
+      const regInput = document.getElementById('signupRegNo');
+      const optReg = document.getElementById('radioOptRegNo');
+      const optAdm = document.getElementById('radioOptAdmNo');
+
+      if (type === 'admNo') {
+        optReg.style.background = 'rgba(7, 26, 43, 0.6)';
+        optReg.style.borderColor = 'var(--border-subtle)';
+        optReg.querySelector('span').style.color = 'var(--text-muted)';
+        optReg.querySelector('span').style.fontWeight = '600';
+        optReg.querySelector('input').checked = false;
+
+        optAdm.style.background = 'rgba(255, 138, 0, 0.15)';
+        optAdm.style.borderColor = 'var(--color-orange)';
+        optAdm.querySelector('span').style.color = 'var(--text-white)';
+        optAdm.querySelector('span').style.fontWeight = '700';
+        optAdm.querySelector('input').checked = true;
+
+        regLabel.innerHTML = '<i class="fas fa-user-tag text-orange me-1"></i> Admission Number';
+        regInput.placeholder = 'Enter admission number (e.g. ADM2026-904)';
+      } else {
+        optAdm.style.background = 'rgba(7, 26, 43, 0.6)';
+        optAdm.style.borderColor = 'var(--border-subtle)';
+        optAdm.querySelector('span').style.color = 'var(--text-muted)';
+        optAdm.querySelector('span').style.fontWeight = '600';
+        optAdm.querySelector('input').checked = false;
+
+        optReg.style.background = 'rgba(255, 138, 0, 0.15)';
+        optReg.style.borderColor = 'var(--color-orange)';
+        optReg.querySelector('span').style.color = 'var(--text-white)';
+        optReg.querySelector('span').style.fontWeight = '700';
+        optReg.querySelector('input').checked = true;
+
+        regLabel.innerHTML = '<i class="fas fa-user-tag text-orange me-1"></i> Register Number';
+        regInput.placeholder = 'Enter register number (e.g. 23AD005)';
+      }
+    }
+
+    function submitSignUp(e) {
+      e.preventDefault();
+      const name = document.getElementById('signupName').value.trim();
+      const regNo = document.getElementById('signupRegNo').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      const confirmPassword = document.getElementById('signupConfirmPassword').value;
+      handleSignUp(name, regNo, email, password, confirmPassword);
+    }
+  </script>
+</body>
+</html>

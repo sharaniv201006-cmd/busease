@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Driver Dashboard - BusEase</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="sticky-navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <i class="fas fa-bus-alt"></i>
+        <div>Bus<span class="highlight">Ease</span></div>
+      </a>
+
+      <div style="font-weight: 700; color: var(--color-orange); letter-spacing: 1px;">
+        <i class="fas fa-id-card me-1"></i> DRIVER CONTROL PANEL
+      </div>
+
+      <div class="nav-actions">
+        <div class="user-badge">
+          <div class="user-avatar" style="background: #10b981; color: #fff;">AK</div>
+          <div>
+            <div style="font-size: 0.85rem; font-weight: 700;">Arun Kumar</div>
+            <div style="font-size: 0.7rem; color: var(--color-orange);">ID: DRV-101</div>
+          </div>
+        </div>
+        <a href="login.html" class="btn-busease-secondary" style="padding: 8px 14px;" onclick="BusEaseState.logout()">
+          <i class="fas fa-sign-out-alt"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div style="max-width: 1200px; margin: 40px auto; padding: 0 24px;">
+
+    <!-- DRIVER INFO & TRIP STATUS BANNER -->
+    <div class="glass-card orange-glow-border" style="padding: 30px; margin-bottom: 32px;">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px;">
+        <div>
+          <span class="section-badge"><i class="fas fa-bus me-1"></i> Assigned Vehicle: BUS-05</span>
+          <h1 style="font-size: 2rem; font-weight: 800; margin-top: 4px;">Pondicherry ECR Route</h1>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Assigned Driver: <strong>Arun Kumar</strong> • Schedule: 08:00 AM Departure</p>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+          <button type="button" class="btn-busease-primary" onclick="startJourneyFlow()">
+            <i class="fas fa-play me-1"></i> START JOURNEY
+          </button>
+
+          <button type="button" class="btn-busease-secondary" style="border-color: #60a5fa; color: #60a5fa;" onclick="completeJourneyFlow()">
+            <i class="fas fa-flag-checkered me-1"></i> COMPLETE JOURNEY
+          </button>
+
+          <button type="button" class="btn-busease-primary" style="background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); color: #fff; box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);" onclick="triggerEmergencyFlow()">
+            🚨 EMERGENCY ALERT
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- METRICS GRID -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 36px;">
+      <div class="glass-card" style="padding: 20px;">
+        <div style="font-size: 0.8rem; color: var(--text-muted);">Trip Status</div>
+        <div style="font-size: 1.5rem; font-weight: 800; color: #10b981;" id="tripStatusDisplay">ACTIVE / ON ROUTE</div>
+      </div>
+
+      <div class="glass-card" style="padding: 20px;">
+        <div style="font-size: 0.8rem; color: var(--text-muted);">Passenger Reservations</div>
+        <div style="font-size: 1.5rem; font-weight: 800; color: var(--color-orange);" id="driverPassCount">28 Passengers</div>
+      </div>
+
+      <div class="glass-card" style="padding: 20px;">
+        <div style="font-size: 0.8rem; color: var(--text-muted);">Capacity Occupancy</div>
+        <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-white);">70% (28/40)</div>
+      </div>
+
+      <div class="glass-card" style="padding: 20px;">
+        <div style="font-size: 0.8rem; color: var(--text-muted);">Next Bus Stop</div>
+        <div style="font-size: 1.4rem; font-weight: 800; color: #60a5fa;">College Main Gate</div>
+      </div>
+    </div>
+
+    <!-- TODAY'S PASSENGER RESERVATION MANIFEST -->
+    <div class="glass-card" style="padding: 28px;">
+      <h3 style="font-size: 1.2rem; margin-bottom: 16px;"><i class="fas fa-users text-orange me-2"></i> Today's Passenger Reservation Manifest (BUS-05)</h3>
+      <div class="custom-table-container">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Seat No</th>
+              <th>Student Name</th>
+              <th>Register No</th>
+              <th>Boarding Stop</th>
+              <th>Reservation Code</th>
+              <th>Gate Verification</th>
+            </tr>
+          </thead>
+          <tbody id="driverManifestTable">
+            <tr>
+              <td><strong class="text-orange">A12</strong></td>
+              <td>Asha Kumar</td>
+              <td>23AD001</td>
+              <td>Pondicherry Bus Stand</td>
+              <td>RES-901</td>
+              <td><span class="badge-status badge-active"><i class="fas fa-check-circle"></i> SCANNED</span></td>
+            </tr>
+            <tr>
+              <td><strong class="text-orange">A14</strong></td>
+              <td>Karthik Raja</td>
+              <td>23AD002</td>
+              <td>ECR Toll Gate</td>
+              <td>RES-892</td>
+              <td><span class="badge-status badge-active"><i class="fas fa-check-circle"></i> SCANNED</span></td>
+            </tr>
+            <tr>
+              <td><strong class="text-orange">B01</strong></td>
+              <td>Meera Raman</td>
+              <td>23AD003</td>
+              <td>Gorimedu</td>
+              <td>RES-884</td>
+              <td><span class="badge-status badge-completed">PENDING</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    function startJourneyFlow() {
+      document.getElementById('tripStatusDisplay').textContent = 'ACTIVE / ON ROUTE';
+      document.getElementById('tripStatusDisplay').style.color = '#10b981';
+      BusEaseState.addNotification('Journey Started', 'BUS-05 driver started morning journey.', 'info');
+      showToast('BUS-05 Trip Status set to ACTIVE!', 'success');
+    }
+
+    function completeJourneyFlow() {
+      if (confirm('Complete journey for BUS-05? Active passenger bookings will be set to COMPLETED.')) {
+        completeJourneySimulation('BUS-05');
+        document.getElementById('tripStatusDisplay').textContent = 'COMPLETED / ARRIVED';
+        document.getElementById('tripStatusDisplay').style.color = '#60a5fa';
+      }
+    }
+
+    function triggerEmergencyFlow() {
+      if (confirm('🚨 Are you sure you want to dispatch an EMERGENCY ALERT for BUS-05? Staff and Admin will be instantly notified.')) {
+        BusEaseState.createEmergencyAlert('BUS-05', 'Arun Kumar');
+        showToast('🚨 EMERGENCY ALERT SENT TO TRANSPORT STAFF AND ADMIN!', 'emergency');
+      }
+    }
+  </script>
+</body>
+</html>

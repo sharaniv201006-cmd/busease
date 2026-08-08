@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emergency Alerts - BusEase</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="sticky-navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <i class="fas fa-bus-alt"></i>
+        <div>Bus<span class="highlight">Ease</span></div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="staff.html">Staff Control</a></li>
+        <li><a href="admin.html">Admin Panel</a></li>
+        <li><a href="emergency.html" class="active">Emergency Hub</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <span class="badge-status badge-emergency" style="font-size: 0.85rem; padding: 6px 14px;">
+          <i class="fas fa-triangle-exclamation me-1"></i> EMERGENCY MONITOR ACTIVE
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <div style="max-width: 1000px; margin: 40px auto; padding: 0 24px;">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px;">
+      <div>
+        <h1 style="font-size: 2rem; margin-bottom: 4px; color: #f87171;"><i class="fas fa-triangle-exclamation me-2"></i> Campus Emergency Alert Dispatch Hub</h1>
+        <p style="color: var(--text-muted);">Real-time emergency distress signals triggered from active campus buses</p>
+      </div>
+    </div>
+
+    <!-- ACTIVE EMERGENCY ALERTS LIST -->
+    <div id="emergencyAlertsList" style="display: flex; flex-direction: column; gap: 20px;">
+      <!-- Populated by JS -->
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderEmergencyHub();
+    });
+
+    function renderEmergencyHub() {
+      const alerts = BusEaseState.getAlerts();
+      const container = document.getElementById('emergencyAlertsList');
+
+      if (alerts.length === 0) {
+        container.innerHTML = `
+          <div class="glass-card" style="padding: 50px; text-align: center; color: var(--text-muted);">
+            <i class="fas fa-shield-alt" style="font-size: 3.5rem; color: #10b981; margin-bottom: 16px;"></i>
+            <h3 style="color: var(--text-white);">No Active Emergency Alerts</h3>
+            <p style="margin-top: 6px;">All campus buses are operating normally with zero safety distress signals.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = alerts.map(a => `
+        <div class="glass-card" style="padding: 28px; border: 2px solid #ef4444; background: rgba(239, 68, 68, 0.1);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+            <div>
+              <span class="badge-status badge-emergency" style="font-size: 0.8rem; margin-bottom: 6px;">🚨 ${a.status} EMERGENCY</span>
+              <h2 style="font-size: 1.6rem; font-weight: 800; color: #f87171;">${a.bus_id} Distress Signal</h2>
+            </div>
+            <span style="font-size: 0.9rem; color: var(--text-muted);"><i class="far fa-clock text-orange me-1"></i> ${a.time}</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px; background: rgba(7,26,43,0.8); padding: 16px; border-radius: var(--radius-md);">
+            <div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Bus Vehicle Code</div>
+              <div style="font-weight: 800; font-size: 1.1rem; color: var(--color-orange);">${a.bus_id}</div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Reporting Driver</div>
+              <div style="font-weight: 700; font-size: 1.1rem;">${a.driver_name}</div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">GPS Coordinates</div>
+              <div style="font-weight: 700; font-size: 0.95rem; color: #60a5fa;">11.9416 N, 79.8083 E</div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 12px;">
+            <button type="button" class="btn-busease-primary" style="background: #10b981; color: #fff;" onclick="resolveAlert('${a.id}')">
+              <i class="fas fa-check me-1"></i> MARK RESOLVED & DISPATCHED
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function resolveAlert(alertId) {
+      let alerts = BusEaseState.getAlerts();
+      alerts = alerts.filter(a => a.id !== alertId);
+      localStorage.setItem(BUSEASE_STORAGE_KEYS.ALERTS, JSON.stringify(alerts));
+      showToast('Emergency alert marked resolved.', 'success');
+      renderEmergencyHub();
+    }
+  </script>
+</body>
+</html>

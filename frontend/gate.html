@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gate Monitoring & Bus Scanner - BusEase</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="sticky-navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <i class="fas fa-bus-alt"></i>
+        <div>Bus<span class="highlight">Ease</span></div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="staff.html">Staff Dashboard</a></li>
+        <li><a href="admin.html">Admin Panel</a></li>
+        <li><a href="gate.html" class="active">Gate Monitoring</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <span class="badge-status badge-active" style="font-size: 0.85rem; padding: 6px 14px;">
+          <i class="fas fa-signal me-1"></i> GATE 1 ONLINE
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <div style="max-width: 1200px; margin: 40px auto; padding: 0 24px;">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px;">
+      <div>
+        <h1 style="font-size: 2rem; margin-bottom: 4px;"><i class="fas fa-camera text-orange me-2"></i> Campus Gate 1 Bus Entry Scanner</h1>
+        <p style="color: var(--text-muted);">Real-time optical QR entry verification simulation for incoming college buses</p>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 40px;">
+      
+      <!-- CAMERA SCANNER SIMULATION PANEL -->
+      <div class="glass-card orange-glow-border" style="padding: 28px; text-align: center;">
+        <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+          <span><i class="fas fa-video text-orange me-2"></i> Live Scanner Preview</span>
+          <span class="badge-status badge-active">CAM-01 ACTIVE</span>
+        </div>
+
+        <!-- CAMERA VIEWPORT BOX -->
+        <div id="cameraViewport" style="position: relative; height: 260px; background: #04101B; border: 2px dashed var(--color-orange); border-radius: var(--radius-md); display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 20px;">
+          
+          <div id="scannerOverlay" style="position: absolute; top: 20px; left: 20px; right: 20px; bottom: 20px; border: 2px stroke var(--color-orange); pointer-events: none; opacity: 0.6;">
+            <div style="position: absolute; top: 0; left: 0; width: 24px; height: 24px; border-top: 3px solid var(--color-orange); border-left: 3px solid var(--color-orange);"></div>
+            <div style="position: absolute; top: 0; right: 0; width: 24px; height: 24px; border-top: 3px solid var(--color-orange); border-right: 3px solid var(--color-orange);"></div>
+            <div style="position: absolute; bottom: 0; left: 0; width: 24px; height: 24px; border-bottom: 3px solid var(--color-orange); border-left: 3px solid var(--color-orange);"></div>
+            <div style="position: absolute; bottom: 0; right: 0; width: 24px; height: 24px; border-bottom: 3px solid var(--color-orange); border-right: 3px solid var(--color-orange);"></div>
+          </div>
+
+          <i class="fas fa-qrcode" id="cameraIcon" style="font-size: 4.5rem; color: var(--color-blue); margin-bottom: 12px; transition: all 0.3s ease;"></i>
+          <div style="font-size: 0.9rem; color: var(--text-muted);" id="cameraStatusText">Position bus QR code in camera frame</div>
+        </div>
+
+        <button type="button" class="btn-busease-primary" style="width: 100%; height: 50px; font-size: 1.05rem;" onclick="simulateGateQrScan()">
+          <i class="fas fa-barcode me-2"></i> SCAN BUS QR CODE
+        </button>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 10px;">Simulates college gate QR scanning algorithm.</p>
+      </div>
+
+      <!-- SCAN RESULT DETAILS -->
+      <div class="glass-card" style="padding: 28px;">
+        <h3 style="font-size: 1.2rem; margin-bottom: 20px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
+          Detected Bus Entry Log
+        </h3>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-muted);">Verification Status</span>
+            <span class="badge-status badge-active" id="resStatus">VERIFIED</span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-muted);">Detected Bus</span>
+            <span style="font-weight: 800; font-size: 1.2rem; color: var(--color-orange);" id="resBusId">BUS-05</span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-muted);">Driver Name</span>
+            <span style="font-weight: 700;" id="resDriver">Arun Kumar</span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-muted);">Bus Route</span>
+            <span style="font-weight: 700;" id="resRoute">Pondicherry → College</span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-muted);">Entry Timestamp</span>
+            <span style="font-weight: 700; color: var(--color-orange);" id="resTime">08:02 AM</span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-muted);">QR Validation Hash</span>
+            <span style="font-family: monospace; font-size: 0.85rem; color: #60a5fa;" id="resHash">QR-BUS05-992</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RECENT GATE LOGS TABLE -->
+    <div class="glass-card" style="padding: 28px;">
+      <h3 style="font-size: 1.2rem; margin-bottom: 16px;"><i class="fas fa-list text-orange me-2"></i> Recent Gate Bus Entries Log</h3>
+      <div class="custom-table-container">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Bus Code</th>
+              <th>Driver</th>
+              <th>Route</th>
+              <th>Entry Time</th>
+              <th>QR Code</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="recentGateLogsTable">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderGateLogsTable();
+    });
+
+    function simulateGateQrScan() {
+      const icon = document.getElementById('cameraIcon');
+      const text = document.getElementById('cameraStatusText');
+      const buses = ['BUS-05', 'BUS-01', 'BUS-02', 'BUS-07', 'BUS-09'];
+      const drivers = ['Arun Kumar', 'Murugan', 'Selvam', 'Rajesh', 'Senthil'];
+      
+      const idx = Math.floor(Math.random() * buses.length);
+      const selectedBus = buses[idx];
+      const selectedDriver = drivers[idx];
+
+      icon.style.color = 'var(--color-orange)';
+      icon.style.transform = 'scale(1.2)';
+      text.textContent = 'SCANNING QR CODE...';
+
+      setTimeout(() => {
+        icon.style.color = '#10b981';
+        icon.style.transform = 'scale(1)';
+        text.textContent = `BUS DETECTED: ${selectedBus}`;
+
+        BusEaseState.addGateLog(selectedBus, selectedDriver, 'Pondicherry → College');
+        BusEaseState.addNotification('Bus Arrived', `${selectedBus} scanned and verified at Gate 1`, 'info');
+
+        document.getElementById('resBusId').textContent = selectedBus;
+        document.getElementById('resDriver').textContent = selectedDriver;
+        document.getElementById('resTime').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('resHash').textContent = `QR-${selectedBus}-${Math.floor(100 + Math.random() * 900)}`;
+
+        showToast(`Gate Entry Verified for ${selectedBus} (${selectedDriver})!`, 'success');
+        renderGateLogsTable();
+      }, 700);
+    }
+
+    function renderGateLogsTable() {
+      const logs = BusEaseState.getGateLogs();
+      const tbody = document.getElementById('recentGateLogsTable');
+      tbody.innerHTML = logs.map(l => `
+        <tr>
+          <td><strong class="text-orange">${l.bus_id}</strong></td>
+          <td>${l.driver_name}</td>
+          <td>${l.route}</td>
+          <td><i class="far fa-clock text-orange me-1"></i> ${l.entry_time}</td>
+          <td><span style="font-family: monospace; font-size: 0.8rem; color: #60a5fa;">${l.qr_code}</span></td>
+          <td><span class="badge-status badge-active"><i class="fas fa-check-circle"></i> ${l.status}</span></td>
+        </tr>
+      `).join('');
+    }
+  </script>
+</body>
+</html>

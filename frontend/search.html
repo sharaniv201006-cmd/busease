@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bus Search & Listing - BusEase</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="sticky-navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <i class="fas fa-bus-alt"></i>
+        <div>Bus<span class="highlight">Ease</span></div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="search.html" class="active">Search Buses</a></li>
+        <li><a href="bookings.html">My Bookings</a></li>
+        <li><a href="student.html">Student Dashboard</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="login.html" class="btn-busease-outline-orange">
+          <i class="fas fa-user-circle"></i> Login
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="busease-container">
+    
+    <!-- SEARCH HEADER BAR -->
+    <div class="glass-card" style="padding: 24px; margin-bottom: 32px; border: 1px solid var(--border-blue);">
+      <h2 style="font-size: 1.5rem; margin-bottom: 20px;"><i class="fas fa-search text-orange me-2"></i> Campus Bus Search & Filters</h2>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
+        <div class="form-group-custom">
+          <label>From</label>
+          <div class="input-box-wrapper">
+            <i class="fas fa-map-marker-alt"></i>
+            <select id="filterFrom" onchange="renderBusesList()">
+              <option value="ALL">All Origins</option>
+              <option value="Pondicherry" selected>Pondicherry</option>
+              <option value="Villupuram">Villupuram</option>
+              <option value="Cuddalore">Cuddalore</option>
+              <option value="Marakkanam">Marakkanam</option>
+              <option value="Tindivanam">Tindivanam</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group-custom">
+          <label>Destination</label>
+          <div class="input-box-wrapper">
+            <i class="fas fa-university"></i>
+            <select id="filterTo" onchange="renderBusesList()">
+              <option value="College" selected>College Main Gate</option>
+              <option value="Pondicherry">Pondicherry</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group-custom">
+          <label>Journey Date</label>
+          <div class="input-box-wrapper">
+            <i class="fas fa-calendar-alt"></i>
+            <input type="date" id="filterDate" value="2026-08-08" onchange="renderBusesList()">
+          </div>
+        </div>
+
+        <div class="form-group-custom">
+          <label>Filter Availability</label>
+          <div class="input-box-wrapper">
+            <i class="fas fa-filter"></i>
+            <select id="filterAvailability" onchange="renderBusesList()">
+              <option value="ALL">All Buses</option>
+              <option value="AVAILABLE">Available Seats Only</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS LISTING -->
+    <div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="font-size: 1.25rem;"><span id="busCountLabel" class="text-orange">8</span> Campus Buses Found</h3>
+        <div style="font-size: 0.85rem; color: var(--text-muted);">Journey Date: <strong class="text-orange" id="selectedDateDisplay">2026-08-08</strong></div>
+      </div>
+
+      <div id="busCardsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px;">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderBusesList();
+    });
+
+    function renderBusesList() {
+      const buses = BusEaseState.getBuses();
+      const fromVal = document.getElementById('filterFrom').value;
+      const availVal = document.getElementById('filterAvailability').value;
+      const dateVal = document.getElementById('filterDate').value;
+
+      document.getElementById('selectedDateDisplay').textContent = dateVal;
+
+      let filtered = buses.filter(b => {
+        if (fromVal !== 'ALL' && !b.route.toLowerCase().includes(fromVal.toLowerCase())) return false;
+        if (availVal === 'AVAILABLE' && b.available <= 0) return false;
+        return true;
+      });
+
+      document.getElementById('busCountLabel').textContent = filtered.length;
+      const grid = document.getElementById('busCardsGrid');
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="glass-card" style="grid-column: 1 / -1; padding: 40px; text-align: center; color: var(--text-muted);">
+            <i class="fas fa-bus" style="font-size: 3rem; margin-bottom: 14px; opacity: 0.4;"></i>
+            <h3>No buses found matching your search criteria</h3>
+            <p style="margin-top: 6px;">Try clearing filters or selecting another date.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(b => {
+        const isFull = b.available <= 0;
+        return `
+          <div class="glass-card" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid ${isFull ? 'rgba(239,68,68,0.4)' : 'var(--border-subtle)'};">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                <div>
+                  <span class="section-badge" style="font-size: 0.7rem; margin-bottom: 4px; padding: 2px 8px;">${b.id}</span>
+                  <h3 style="font-size: 1.2rem; font-weight: 700;">${b.name}</h3>
+                </div>
+                <div style="background: rgba(255,138,0,0.15); border: 1px solid var(--color-orange); color: var(--color-orange); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700;">
+                  4.8 ★
+                </div>
+              </div>
+
+              <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px;">
+                <i class="fas fa-route text-orange me-1"></i> ${b.route}
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; background: rgba(7,26,43,0.7); padding: 14px 20px; border-radius: var(--radius-md); text-align: center; margin-bottom: 20px;">
+                <div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 2px;">Departure</div>
+                  <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-white);"><i class="far fa-clock text-orange me-1"></i> ${b.departure}</div>
+                </div>
+                <div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 2px;">Return</div>
+                  <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-white);"><i class="fas fa-undo text-orange me-1"></i> ${b.returnTime}</div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <span style="font-size: 0.85rem; color: var(--text-muted);">Seat Availability:</span>
+                <span style="font-weight: 700; color: ${isFull ? '#f87171' : '#10b981'}; font-size: 0.95rem;">
+                  ${isFull ? 'BUS FULL (0 seats)' : `${b.available} / ${b.capacity} Seats Available`}
+                </span>
+              </div>
+
+              ${isFull ? 
+                `<a href="seats.html?bus=${b.id}" class="btn-busease-secondary" style="width: 100%; border-color: rgba(239,68,68,0.5); color: #f87171;">
+                  VIEW ALTERNATIVES <i class="fas fa-exclamation-circle ms-1"></i>
+                </a>` : 
+                `<a href="seats.html?bus=${b.id}&date=${dateVal}" class="btn-busease-primary" style="width: 100%;">
+                  VIEW SEATS <i class="fas fa-arrow-right ms-1"></i>
+                </a>`
+              }
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  </script>
+</body>
+</html>

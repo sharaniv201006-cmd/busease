@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Bookings - BusEase</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="sticky-navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <i class="fas fa-bus-alt"></i>
+        <div>Bus<span class="highlight">Ease</span></div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="student.html">Dashboard</a></li>
+        <li><a href="search.html">Search Buses</a></li>
+        <li><a href="bookings.html" class="active">My Bookings</a></li>
+        <li><a href="notifications.html">Notifications</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="search.html" class="btn-busease-primary" style="padding: 8px 16px; font-size: 0.85rem;">
+          <i class="fas fa-plus-circle me-1"></i> New Booking
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="busease-container">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px;">
+      <div>
+        <h1 style="font-size: 2rem; margin-bottom: 4px;"><i class="fas fa-history text-orange me-2"></i> Reservation History</h1>
+        <p style="color: var(--text-muted);">Manage your active, completed, and date-based campus reservations</p>
+      </div>
+    </div>
+
+    <!-- FILTER TABS -->
+    <div style="display: flex; gap: 10px; margin-bottom: 24px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
+      <button type="button" class="btn-tab active" data-tab="ALL" onclick="filterBookings('ALL')" style="padding: 8px 18px; font-weight: 700; border-radius: var(--radius-md); border: none; background: var(--color-orange); color: #071A2B; cursor: pointer;">All Bookings</button>
+      <button type="button" class="btn-tab" data-tab="ACTIVE" onclick="filterBookings('ACTIVE')" style="padding: 8px 18px; font-weight: 700; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: transparent; color: var(--text-muted); cursor: pointer;">Active</button>
+      <button type="button" class="btn-tab" data-tab="COMPLETED" onclick="filterBookings('COMPLETED')" style="padding: 8px 18px; font-weight: 700; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: transparent; color: var(--text-muted); cursor: pointer;">Completed</button>
+      <button type="button" class="btn-tab" data-tab="CANCELLED" onclick="filterBookings('CANCELLED')" style="padding: 8px 18px; font-weight: 700; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); background: transparent; color: var(--text-muted); cursor: pointer;">Cancelled</button>
+    </div>
+
+    <!-- BOOKINGS TABLE -->
+    <div class="custom-table-container">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Booking Code</th>
+            <th>Journey Date</th>
+            <th>Bus Code</th>
+            <th>Route</th>
+            <th>Seat</th>
+            <th>Status</th>
+            <th>Deadline</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="bookingsTableBody">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    let activeFilterTab = 'ALL';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderBookings();
+    });
+
+    function filterBookings(tab) {
+      activeFilterTab = tab;
+      document.querySelectorAll('.btn-tab').forEach(btn => {
+        if (btn.dataset.tab === tab) {
+          btn.style.background = 'var(--color-orange)';
+          btn.style.color = '#071A2B';
+          btn.style.border = 'none';
+        } else {
+          btn.style.background = 'transparent';
+          btn.style.color = 'var(--text-muted)';
+          btn.style.border = '1px solid var(--border-subtle)';
+        }
+      });
+      renderBookings();
+    }
+
+    function renderBookings() {
+      const bookings = BusEaseState.getBookings();
+      let filtered = bookings;
+      if (activeFilterTab !== 'ALL') {
+        filtered = bookings.filter(b => b.status === activeFilterTab);
+      }
+
+      const tbody = document.getElementById('bookingsTableBody');
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 40px; color: var(--text-muted);">
+              No reservation records found for tab: <strong>${activeFilterTab}</strong>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(b => {
+        const isActive = b.status === 'ACTIVE';
+        return `
+          <tr>
+            <td><strong class="text-orange">${b.id}</strong></td>
+            <td><i class="far fa-calendar-alt text-orange me-1"></i> ${b.journey_date}</td>
+            <td><strong>${b.bus_id}</strong></td>
+            <td>${b.route}</td>
+            <td><span style="font-weight: 800; color: var(--color-orange);">${b.seat_number}</span></td>
+            <td><span class="badge-status badge-${b.status.toLowerCase()}">${b.status}</span></td>
+            <td><span style="font-size: 0.8rem; color: var(--text-muted);">${b.cancellation_deadline || '07:30 AM'}</span></td>
+            <td>
+              <div style="display: flex; gap: 8px;">
+                <a href="ticket.html?id=${b.id}" class="btn-busease-secondary" style="padding: 4px 10px; font-size: 0.75rem;">
+                  <i class="fas fa-qrcode"></i> Ticket
+                </a>
+                ${isActive ? 
+                  `<button type="button" class="btn-busease-secondary" style="padding: 4px 10px; font-size: 0.75rem; color: #f87171; border-color: rgba(239,68,68,0.4);" onclick="handleCancelClick('${b.id}')">
+                    Cancel
+                  </button>` : ''
+                }
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function handleCancelClick(id) {
+      if (confirm(`Cancel reservation ${id}? The seat will be released for other students.`)) {
+        cancelReservation(id);
+        renderBookings();
+      }
+    }
+  </script>
+</body>
+</html>

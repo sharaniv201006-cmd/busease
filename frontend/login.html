@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - BusEase Smart Transportation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+<header class="login-header">
+  <a href="index.html" class="brand-logo">
+    <i class="fas fa-bus-alt"></i>
+    <span>Bus<span class="highlight">Ease</span></span>
+  </a>
+  <a href="index.html" class="back-link"><i class="fas fa-arrow-left me-1"></i> Home</a>
+</header>
+  <div class="login-page">
+  <div class="login-visual">
+    <div class="visual-content">
+      <h1>Smart College Bus Management</h1>
+      <p>Track routes, manage transportation and stay connected with your college bus network.</p>
+    </div>
+    <!-- Optional SVG bus illustration -->
+    <svg class="bus-illustration" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="busGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#0B3A66" />
+          <stop offset="60%" stop-color="#061B35" />
+        </linearGradient>
+        <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#FF9D00" />
+          <stop offset="100%" stop-color="#FFB84D" />
+        </linearGradient>
+        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="10" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+      <!-- Simple bus shape similar to hero -->
+      <path d="M120 160 C120 120 160 110 240 110 L680 110 C740 110 760 140 760 190 L760 320 C760 350 730 360 690 360 L140 360 C100 360 80 340 80 300 L80 220 Z" fill="url(#busGrad)" stroke="#0B3A66" stroke-width="4"/>
+      <path d="M80 270 L760 270 L760 290 L80 290 Z" fill="url(#orangeGrad)" />
+    </svg>
+  </div>
+  <div class="login-form">
+    <div class="login-card glass-panel">
+      <div style="text-align: center; margin-bottom: 28px;">
+        <div class="section-badge" style="margin-bottom: 8px;">Portal Authentication</div>
+        <h2 style="font-size: 1.8rem; margin-bottom: 6px;">Sign In to BusEase</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Select your role to access your dedicated transportation portal</p>
+      </div>
+
+      <!-- ROLE SELECTOR TABS -->
+      <div class="role-tabs" id="roleTabs">
+        <button type="button" class="btn-role active" data-role="student" onclick="switchRole('student')">Student</button>
+        <button type="button" class="btn-role" data-role="driver" onclick="switchRole('driver')">Driver</button>
+        <button type="button" class="btn-role" data-role="staff" onclick="switchRole('staff')">Staff</button>
+        <button type="button" class="btn-role" data-role="admin" onclick="switchRole('admin')">Admin</button>
+      </div>
+
+      <!-- FORM -->
+      <form id="loginForm" onsubmit="submitLogin(event)">
+        <input type="hidden" id="selectedRole" value="student">
+        <div class="form-group">
+          <label>Register Number / Email / Username</label>
+          <div class="input-box-wrapper">
+            <i class="fas fa-user text-orange"></i>
+            <input type="text" id="loginUsername" placeholder="Enter register number, email or username" value="student01" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-box-wrapper">
+            <i class="fas fa-lock text-orange"></i>
+            <input type="password" id="loginPassword" placeholder="Enter password" value="Student@123" required>
+          </div>
+        </div>
+        <button type="submit" class="btn-busease-primary btn-login">LOG IN NOW <i class="fas fa-sign-in-alt me-1"></i></button>
+      </form>
+
+      <div style="text-align: center; margin-top: 18px; margin-bottom: 20px; font-size: 0.92rem; color: var(--text-muted);">
+        Don't have an account? <a href="signup.html" style="color: var(--color-orange); font-weight: 600; text-decoration: none;">Sign Up</a>
+      </div>
+
+      <!-- 1-CLICK DEMO ACCOUNTS ASSISTANT -->
+      <div class="demo-assistant">
+        <div class="demo-header">⚡ 1-Click Demo Evaluation Sign In</div>
+        <div class="demo-buttons">
+          <button type="button" class="btn-busease-secondary" onclick="quickDemoLogin('student')"><i class="fas fa-user-graduate text-orange"></i> Student (student01)</button>
+          <button type="button" class="btn-busease-secondary" onclick="quickDemoLogin('driver')"><i class="fas fa-id-card text-orange"></i> Driver (driver01)</button>
+          <button type="button" class="btn-busease-secondary" onclick="quickDemoLogin('staff')"><i class="fas fa-clipboard-list text-orange"></i> Staff (staff01)</button>
+          <button type="button" class="btn-busease-secondary" onclick="quickDemoLogin('admin')"><i class="fas fa-user-shield text-orange"></i> Admin (admin)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="script.js"></script>
+  <script>
+    const rolePresets = {
+      student: { user: 'student01', pass: 'Student@123' },
+      driver: { user: 'driver01', pass: 'Driver@123' },
+      staff: { user: 'staff01', pass: 'Staff@123' },
+      admin: { user: 'admin', pass: 'Admin@123' }
+    };
+
+    function switchRole(role) {
+      document.getElementById('selectedRole').value = role;
+      document.querySelectorAll('#roleTabs button').forEach(btn => {
+        if (btn.dataset.role === role) {
+          btn.style.background = 'var(--color-orange)';
+          btn.style.color = '#071A2B';
+        } else {
+          btn.style.background = 'transparent';
+          btn.style.color = 'var(--text-muted)';
+        }
+      });
+
+      document.getElementById('loginUsername').value = rolePresets[role].user;
+      document.getElementById('loginPassword').value = rolePresets[role].pass;
+    }
+
+    function quickDemoLogin(role) {
+      switchRole(role);
+      handleLogin(role, rolePresets[role].user, rolePresets[role].pass);
+    }
+
+    function submitLogin(e) {
+      e.preventDefault();
+      const role = document.getElementById('selectedRole').value;
+      const user = document.getElementById('loginUsername').value;
+      const pass = document.getElementById('loginPassword').value;
+      handleLogin(role, user, pass);
+    }
+
+    // Auto select role if query param exists
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramRole = urlParams.get('role');
+    if (paramRole && rolePresets[paramRole]) {
+      switchRole(paramRole);
+    }
+  </script>
+</body>
+</html>
