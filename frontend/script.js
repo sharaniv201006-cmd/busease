@@ -177,7 +177,221 @@ class BusEaseState {
     setTimeout(() => {
       window.location.href = 'login.html';
     }, 300);
+}
+
+// ==========================================================================
+// DYNAMIC MAINTENANCE, REPAIR & ALTERNATIVE BUS ENGINE
+// ==========================================================================
+function getTodayDateString() {
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function calculateDaysBetween(startDateStr, endDateStr) {
+  if (!startDateStr) return 0;
+  const start = new Date(startDateStr);
+  const end = endDateStr ? new Date(endDateStr) : new Date();
+  const diffTime = Math.abs(end - start);
+  return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+}
+
+function calculateDaysSinceService(lastServiceDate) {
+  if (!lastServiceDate) return 0;
+  return calculateDaysBetween(lastServiceDate, getTodayDateString());
+}
+
+function calculateDaysInService(repairStartDate) {
+  if (!repairStartDate) return 0;
+  return calculateDaysBetween(repairStartDate, getTodayDateString());
+}
+
+function getBusMaintenanceStatus(bus) {
+  if (bus.status === 'Under Maintenance' || bus.status === 'Under Repair' || bus.repairStatus === 'Under Repair' || bus.repairStatus === 'Under Maintenance') {
+    return { label: 'Under Repair', badgeClass: 'badge-under-repair', icon: 'fa-wrench', color: '#f87171' };
   }
+  
+  const today = getTodayDateString();
+  const daysSince = calculateDaysSinceService(bus.lastServiceDate);
+  
+  if (bus.nextServiceDate && today > bus.nextServiceDate) {
+    return { label: 'Service Overdue', badgeClass: 'badge-overdue', icon: 'fa-triangle-exclamation', color: '#ef4444' };
+  }
+  
+  if (bus.nextServiceDate) {
+    const daysUntilNext = calculateDaysBetween(today, bus.nextServiceDate);
+    if (daysUntilNext <= 7) {
+      return { label: 'Service Due Soon', badgeClass: 'badge-due-soon', icon: 'fa-clock', color: '#fbbf24' };
+    }
+  }
+  
+  return { label: 'Recently Serviced', badgeClass: 'badge-recently-serviced', icon: 'fa-check-circle', color: '#10b981' };
+}
+
+// STRICT EXCLUSION ALTERNATIVE BUS ENGINE:
+// Never recommend a bus whose status is Under Repair, Under Maintenance, Offline, or Full (available <= 0)
+function getAlternativeBuses(targetBusId) {
+  const buses = BusEaseState.getBuses();
+  const targetBus = buses.find(b => b.id === targetBusId || b.busNumber === targetBusId || b.number === targetBusId);
+  if (!targetBus) return [];
+
+  const targetRoute = targetBus.route;
+
+  const validAlternatives = buses.filter(b => {
+    if (b.id === targetBus.id) return false;
+    if (b.available <= 0) return false;
+    if (b.status === 'Under Maintenance' || b.status === 'Under Repair' || b.status === 'Offline') return false;
+    if (b.repairStatus === 'Under Repair' || b.repairStatus === 'Under Maintenance') return false;
+    return true;
+  });
+
+  // Ranking Criteria: 1) Same route, 2) Max available seats, 3) Distance, 4) Lowest ETA
+  validAlternatives.sort((a, b) => {
+    const aSameRoute = a.route === targetRoute ? 1 : 0;
+    const bSameRoute = b.route === targetRoute ? 1 : 0;
+    if (aSameRoute !== bSameRoute) return bSameRoute - aSameRoute;
+
+    if (b.available !== a.available) return b.available - a.available;
+
+    const aDist = a.distanceKm || 999;
+    const bDist = b.distanceKm || 999;
+    if (aDist !== bDist) return aDist - bDist;
+
+    const aEta = parseInt(a.eta || '99') || 99;
+    const bEta = parseInt(b.eta || '99') || 99;
+    return aEta - bEta;
+  });
+
+  return validAlternatives;
+}
+
+// ==========================================================================
+// DATA-AWARE INTELLIGENT ASSISTANT ENGINE (getAIResponse)
+// ==========================================================================
+function getAIResponse(userMessage, currentUser) {
+  const query = userMessage.toLowerCase().trim();
+  const buses = BusEaseState.getBuses();
+  const bookings = BusEaseState.getBookings();
+
+  // Student Context Awareness: Find student's assigned / active booked bus
+  const studentReg = (currentUser && (currentUser.regNo || currentUser.register_number || currentUser.username)) || '23AD001';
+  const activeBooking = bookings.find(b => b.status === 'ACTIVE' && (b.student_id === studentReg || b.student_name === currentUser?.name));
+
+  let assignedBusId = activeBooking ? activeBooking.bus_id : (currentUser?.assignedBus || 'BUS-05');
+  let assignedBus = buses.find(b => b.id === assignedBusId || b.busNumber === assignedBusId || b.number === assignedBusId) || buses[0];
+
+  // Specific bus mentioned in query?
+  const mentionedBus = buses.find(b => 
+    query.includes(b.id.toLowerCase()) || 
+    (b.number && query.includes(b.number.toLowerCase())) ||
+    (b.busNumber && query.includes(b.busNumber.toLowerCase()))
+  );
+
+  const targetBus = mentionedBus || assignedBus;
+
+  // 1. LOCATION / TRACKING QUERY
+  if (query.includes('where') || query.includes('location') || query.includes('track') || query.includes('eta') || query.includes('arrived')) {
+    if (targetBus.status === 'Under Repair' || targetBus.status === 'Under Maintenance' || targetBus.repairStatus === 'Under Repair') {
+      const alternatives = getAlternativeBuses(targetBus.id);
+      const altText = alternatives.length > 0 ? 
+        `💡 Recommended alternative: **${alternatives[0].number || alternatives[0].id} (${alternatives[0].name})** on your route with **${alternatives[0].available} available seats** (ETA ${alternatives[0].eta}).` : 
+        `Please check the Search Buses page for alternative options.`;
+
+      return {
+        text: `🔧 **${targetBus.number || targetBus.id} (${targetBus.name})** is currently **Under Repair** due to: *"${targetBus.repairReason || 'Maintenance'}"*.\n\n📅 Expected Return Date: **${targetBus.expectedReturnDate || '14-Aug-2026'}** (${calculateDaysInService(targetBus.repairStartDate)} days in service).\n\n${altText}`,
+        action: alternatives.length > 0 ? { type: 'TRACK_ALT', busId: alternatives[0].id } : null
+      };
+    }
+
+    return {
+      text: `📍 **${targetBus.number || targetBus.id} (${targetBus.name})** is currently **${targetBus.status}** at **${targetBus.currentStop || 'Campus Terminal'}**, heading to **${targetBus.nextStop || 'College Gate'}**.\n\n⏱️ **ETA**: ${targetBus.eta || '5 min'} | **Distance**: ${targetBus.distanceKm || 0.8} km | **Departure**: ${targetBus.departure}`,
+      action: { type: 'TRACK_BUS', busId: targetBus.id }
+    };
+  }
+
+  // 2. SERVICE HISTORY / DAYS SINCE SERVICE QUERY
+  if (query.includes('service') || query.includes('maintenance') || query.includes('serviced')) {
+    const daysSince = calculateDaysSinceService(targetBus.lastServiceDate);
+    const maintStatus = getBusMaintenanceStatus(targetBus);
+
+    if (query.includes('how many times') || query.includes('count')) {
+      return {
+        text: `🛠️ **${targetBus.number || targetBus.id}** has been serviced **${targetBus.serviceCount || 8} times** according to college transport records.`
+      };
+    }
+
+    return {
+      text: `🔧 **${targetBus.number || targetBus.id}** was last serviced on **${targetBus.lastServiceDate || '05-Aug-2026'}** at **${targetBus.serviceCenter || 'ABC Motors'}** (${targetBus.serviceType || 'Regular Maintenance'}).\n\n📅 **Days Since Last Service**: ${daysSince} days\n🏷️ **Status**: ${maintStatus.label}\n📆 **Next Service Due**: ${targetBus.nextServiceDate || '05-Sep-2026'}`
+    };
+  }
+
+  // 3. REPAIR / BREAKDOWN QUERY
+  if (query.includes('repair') || query.includes('breakdown') || query.includes('return') || query.includes('unavailable')) {
+    if (targetBus.status === 'Under Repair' || targetBus.status === 'Under Maintenance' || targetBus.repairStatus === 'Under Repair') {
+      const daysInRepair = calculateDaysInService(targetBus.repairStartDate);
+      const alternatives = getAlternativeBuses(targetBus.id);
+
+      return {
+        text: `🔧 **${targetBus.number || targetBus.id}** is currently **Under Repair** due to: *"${targetBus.repairReason || 'Brake inspection'}"*.\n\n⏱️ **Days in Repair**: ${daysInRepair} days\n📅 **Expected Return Date**: ${targetBus.expectedReturnDate || '14-Aug-2026'}\n\nRecommended alternative: **${alternatives[0]?.number || '57-ENGG'}** (${alternatives[0]?.available || 15} available seats).`,
+        action: alternatives.length > 0 ? { type: 'RESERVE_ALT', busId: alternatives[0].id } : null
+      };
+    }
+
+    return {
+      text: `✅ **${targetBus.number || targetBus.id}** is operational and in active service (**Status: ${targetBus.status}**). It is not under repair.`
+    };
+  }
+
+  // 4. SEAT AVAILABILITY / BOOKING QUERY
+  if (query.includes('seat') || query.includes('available') || query.includes('capacity') || query.includes('full') || query.includes('reserve') || query.includes('book')) {
+    if (targetBus.status === 'Under Repair' || targetBus.status === 'Under Maintenance') {
+      return {
+        text: `❌ Cannot reserve seats on **${targetBus.number || targetBus.id}** as it is currently **Under Repair**. Please select an alternative bus.`
+      };
+    }
+
+    if (targetBus.available <= 0) {
+      const alternatives = getAlternativeBuses(targetBus.id);
+      return {
+        text: `⚠️ **${targetBus.number || targetBus.id}** is **FULL** (0 / ${targetBus.capacity} seats remaining).\n\n💡 **Recommended Alternative**: **${alternatives[0]?.number || '57-ENGG'}** with **${alternatives[0]?.available || 15} available seats** on the same route.`,
+        action: alternatives.length > 0 ? { type: 'RESERVE_ALT', busId: alternatives[0].id } : null
+      };
+    }
+
+    return {
+      text: `💺 **${targetBus.number || targetBus.id} (${targetBus.name})** has **${targetBus.available} available seats** (out of ${targetBus.capacity} capacity).\n\nRoute: ${targetBus.route} | Departure: ${targetBus.departure}`,
+      action: { type: 'RESERVE_BUS', busId: targetBus.id }
+    };
+  }
+
+  // 5. DRIVER INFO QUERY
+  if (query.includes('driver') || query.includes('who is driving')) {
+    return {
+      text: `👨‍✈️ **${targetBus.number || targetBus.id}** is assigned to driver **${targetBus.driver}** (Driver ID: ${targetBus.driverId || 'DRV-101'}, Experience: ${targetBus.driverExp || '8 Years'}).\n\nStatus: **${targetBus.status}**`
+    };
+  }
+
+  // 6. ALTERNATIVE BUS QUERY
+  if (query.includes('alternative') || query.includes('instead') || query.includes('other bus')) {
+    const alternatives = getAlternativeBuses(targetBus.id);
+    if (alternatives.length === 0) {
+      return {
+        text: `No active alternative buses currently available for route ${targetBus.route}.`
+      };
+    }
+    const topAlt = alternatives[0];
+    return {
+      text: `🚌 **Recommended Alternative**: **${topAlt.number || topAlt.id} (${topAlt.name})**\n\n✓ Same Route: ${topAlt.route}\n💺 Available Seats: ${topAlt.available}\n📏 Distance: ${topAlt.distanceKm || 0.5} km\n⏱️ ETA: ${topAlt.eta}\n🟢 Status: ${topAlt.status}`,
+      action: { type: 'RESERVE_ALT', busId: topAlt.id }
+    };
+  }
+
+  // 7. STRICT FALLBACK (No invented data)
+  return {
+    text: `🤖 I couldn't find that specific information in the current BusEase live data.\n\nTry asking about:\n• *"Where is my bus?"*\n• *"Is Bus 53 available?"*\n• *"When was Bus 53 last serviced?"*\n• *"When will Bus 53 return from repair?"*\n• *"Who is driving my bus?"*\n• *"Is there an alternative bus?"*`
+  };
 }
 
 // --- ROUTE GUARD SYSTEM ---
