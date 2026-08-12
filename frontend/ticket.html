@@ -3,9 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FF8A00">
   <title>Digital Ticket - BusEase</title>
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
+  <style>
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      body * {
+        visibility: hidden !important;
+      }
+      .sticky-navbar,
+      .busease-ai-fab,
+      .ai-chat-window,
+      #pwa-install-banner,
+      .btn-busease-primary,
+      .btn-busease-secondary,
+      .section-badge,
+      header,
+      footer {
+        display: none !important;
+      }
+      #ticketPrintArea,
+      #ticketPrintArea * {
+        visibility: visible !important;
+      }
+      #ticketPrintArea {
+        position: absolute !important;
+        left: 50% !important;
+        top: 20px !important;
+        transform: translateX(-50%) !important;
+        width: 90% !important;
+        max-width: 500px !important;
+        border: 2px solid #0B2942 !important;
+        box-shadow: none !important;
+        background: #0B2942 !important;
+        color: #ffffff !important;
+        border-radius: 16px !important;
+        overflow: hidden !important;
+      }
+      #ticketPrintArea .ticket-header {
+        background: #071A2B !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      #ticketPrintArea .ticket-body {
+        background: #0B2942 !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -13,7 +66,7 @@
   <header class="sticky-navbar">
     <div class="nav-container">
       <a href="index.html" class="brand-logo">
-        <i class="fas fa-bus-alt"></i>
+        <i class="fas fa-bus-alt text-orange"></i>
         <div>Bus<span class="highlight">Ease</span></div>
       </a>
 
@@ -39,12 +92,12 @@
       <p style="color: var(--text-muted);">Official Digital Bus Boarding Pass</p>
     </div>
 
-    <!-- TICKET CONTAINER -->
+    <!-- TICKET CONTAINER (ONLY THIS IS PRINTED) -->
     <div class="ticket-wrapper" id="ticketPrintArea">
       <div class="ticket-header">
         <div>
           <a href="index.html" class="brand-logo" style="font-size: 1.3rem;">
-            <i class="fas fa-bus-alt"></i>
+            <i class="fas fa-bus-alt text-orange"></i>
             <div>Bus<span class="highlight">Ease</span></div>
           </a>
           <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Campus Transit Pass</div>
@@ -108,9 +161,9 @@
     </div>
 
     <!-- TICKET ACTIONS -->
-    <div style="display: flex; gap: 16px; margin-top: 24px; justify-content: center;">
-      <button type="button" class="btn-busease-primary" onclick="downloadTicketPdf()">
-        <i class="fas fa-download me-1"></i> DOWNLOAD TICKET
+    <div style="display: flex; gap: 16px; margin-top: 24px; justify-content: center; flex-wrap: wrap;">
+      <button type="button" class="btn-busease-primary" onclick="printOnlyTicket()">
+        <i class="fas fa-print me-1"></i> PRINT TICKET ONLY
       </button>
       <a href="bookings.html" class="btn-busease-secondary">
         <i class="fas fa-list me-1"></i> VIEW MY BOOKINGS
@@ -140,8 +193,8 @@
       }
     });
 
-    function downloadTicketPdf() {
-      showToast('Downloading ticket copy...', 'success');
+    function printOnlyTicket() {
+      showToast('Opening print dialog for ticket...', 'info');
       window.print();
     }
   </script>
