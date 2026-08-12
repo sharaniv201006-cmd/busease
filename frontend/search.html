@@ -135,23 +135,51 @@
       }
 
       grid.innerHTML = filtered.map(b => {
-        const isFull = b.available <= 0;
+        const isUnderRepair = b.status === 'Under Repair' || b.status === 'Under Maintenance' || b.repairStatus === 'Under Repair';
+        const isFull = b.available <= 0 || isUnderRepair;
+        const daysSince = calculateDaysSinceService(b.lastServiceDate);
+        const maintStatus = getBusMaintenanceStatus(b);
+
+        let actionCTA = `<a href="seats.html?bus=${b.id}&date=${dateVal}" class="btn-busease-primary" style="width: 100%;">
+          SELECT SEATS <i class="fas fa-arrow-right ms-1"></i>
+        </a>`;
+
+        if (isUnderRepair) {
+          actionCTA = `<a href="seats.html?bus=${b.id}" class="btn-busease-secondary" style="width: 100%; border-color: rgba(239,68,68,0.5); color: #f87171;">
+            <i class="fas fa-wrench me-1"></i> UNDER REPAIR (VIEW ALTERNATIVES)
+          </a>`;
+        } else if (b.available <= 0) {
+          actionCTA = `<a href="seats.html?bus=${b.id}" class="btn-busease-secondary" style="width: 100%; border-color: rgba(239,68,68,0.5); color: #f87171;">
+            VIEW ALTERNATIVES <i class="fas fa-exclamation-circle ms-1"></i>
+          </a>`;
+        }
+
         return `
-          <div class="glass-card" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid ${isFull ? 'rgba(239,68,68,0.4)' : 'var(--border-subtle)'};">
+          <div class="glass-card" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid ${isUnderRepair ? '#ef4444' : (b.available <= 0 ? 'rgba(239,68,68,0.4)' : 'var(--border-subtle)')};">
             <div>
               <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
                 <div>
-                  <span class="section-badge" style="font-size: 0.7rem; margin-bottom: 4px; padding: 2px 8px;">${b.id}</span>
+                  <span class="section-badge" style="font-size: 0.7rem; margin-bottom: 4px; padding: 2px 8px;">${b.number || b.id}</span>
                   <h3 style="font-size: 1.2rem; font-weight: 700;">${b.name}</h3>
                 </div>
-                <div style="background: rgba(255,138,0,0.15); border: 1px solid var(--color-orange); color: var(--color-orange); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700;">
-                  4.8 ★
-                </div>
+                <span class="badge-status ${maintStatus.badgeClass}" style="font-size: 0.72rem;">
+                  <i class="fas ${maintStatus.icon} me-1"></i> ${maintStatus.label}
+                </span>
               </div>
 
-              <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px;">
+              <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 12px;">
                 <i class="fas fa-route text-orange me-1"></i> ${b.route}
               </div>
+
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">
+                <i class="fas fa-tools text-orange me-1"></i> Last Serviced: <strong>${b.lastServiceDate || '05-Aug-2026'}</strong> (${daysSince} days ago)
+              </div>
+
+              ${isUnderRepair ? `
+                <div style="background: rgba(239,68,68,0.15); border: 1px solid #ef4444; padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; font-size: 0.82rem; color: #f87171;">
+                  <i class="fas fa-wrench me-1"></i> <strong>Under Repair:</strong> "${b.repairReason || 'Maintenance Check'}". Expected return: ${b.expectedReturnDate || '14-Aug-2026'}.
+                </div>
+              ` : ''}
 
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; background: rgba(7,26,43,0.7); padding: 14px 20px; border-radius: var(--radius-md); text-align: center; margin-bottom: 20px;">
                 <div>
@@ -169,18 +197,11 @@
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                 <span style="font-size: 0.85rem; color: var(--text-muted);">Seat Availability:</span>
                 <span style="font-weight: 700; color: ${isFull ? '#f87171' : '#10b981'}; font-size: 0.95rem;">
-                  ${isFull ? 'BUS FULL (0 seats)' : `${b.available} / ${b.capacity} Seats Available`}
+                  ${isUnderRepair ? 'UNDER REPAIR' : (b.available <= 0 ? 'BUS FULL (0 seats)' : `${b.available} / ${b.capacity} Seats Available`)}
                 </span>
               </div>
 
-              ${isFull ? 
-                `<a href="seats.html?bus=${b.id}" class="btn-busease-secondary" style="width: 100%; border-color: rgba(239,68,68,0.5); color: #f87171;">
-                  VIEW ALTERNATIVES <i class="fas fa-exclamation-circle ms-1"></i>
-                </a>` : 
-                `<a href="seats.html?bus=${b.id}&date=${dateVal}" class="btn-busease-primary" style="width: 100%;">
-                  VIEW SEATS <i class="fas fa-arrow-right ms-1"></i>
-                </a>`
-              }
+              ${actionCTA}
             </div>
           </div>
         `;

@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FF8A00">
   <title>Admin Dashboard - BusEase Control Center</title>
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -13,7 +15,7 @@
   <header class="sticky-navbar">
     <div class="nav-container">
       <a href="index.html" class="brand-logo">
-        <i class="fas fa-bus-alt"></i>
+        <i class="fas fa-bus-alt text-orange"></i>
         <div>Bus<span class="highlight">Ease</span></div>
       </a>
 
@@ -44,7 +46,7 @@
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px;">
       <div>
         <h1 style="font-size: 2rem; margin-bottom: 4px;"><i class="fas fa-user-shield text-orange me-2"></i> Executive Admin Control Center</h1>
-        <p style="color: var(--text-muted);">Overview of college fleet metrics, active bookings, drivers, routes, and emergency controls</p>
+        <p style="color: var(--text-muted);">Overview of college fleet metrics, maintenance overview, active bookings, and AI Smart Insights</p>
       </div>
       <div style="display: flex; gap: 12px;">
         <a href="analytics.html" class="btn-busease-primary">
@@ -64,19 +66,63 @@
       </div>
       <div class="glass-card" style="padding: 20px;">
         <div style="font-size: 0.8rem; color: var(--text-muted);">Total Buses</div>
-        <div style="font-size: 1.8rem; font-weight: 800; color: var(--color-orange);" id="admBuses">15 Buses</div>
+        <div style="font-size: 1.8rem; font-weight: 800; color: var(--color-orange);" id="admBuses">8 Buses</div>
       </div>
       <div class="glass-card" style="padding: 20px;">
-        <div style="font-size: 0.8rem; color: var(--text-muted);">Total Drivers</div>
-        <div style="font-size: 1.8rem; font-weight: 800; color: #60a5fa;">10 Drivers</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">Under Repair</div>
+        <div style="font-size: 1.8rem; font-weight: 800; color: #f87171;" id="admUnderRepair">0 Buses</div>
       </div>
       <div class="glass-card" style="padding: 20px;">
-        <div style="font-size: 0.8rem; color: var(--text-muted);">Active Routes</div>
-        <div style="font-size: 1.8rem; font-weight: 800; color: #10b981;">10 Routes</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">Service Due Soon</div>
+        <div style="font-size: 1.8rem; font-weight: 800; color: #fbbf24;" id="admDueSoon">0 Buses</div>
       </div>
       <div class="glass-card" style="padding: 20px;">
         <div style="font-size: 0.8rem; color: var(--text-muted);">Total Reservations</div>
         <div style="font-size: 1.8rem; font-weight: 800; color: var(--color-orange);" id="admReservations">100+</div>
+      </div>
+    </div>
+
+    <!-- SMART ADMINISTRATIVE INSIGHTS PANEL -->
+    <div class="glass-card" style="padding: 28px; margin-bottom: 36px; border: 1px solid var(--border-orange); background: linear-gradient(135deg, rgba(13,41,67,0.95), rgba(7,26,43,0.98)); box-shadow: 0 12px 30px rgba(0,0,0,0.5);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div>
+          <h3 style="font-size: 1.3rem; color: var(--color-orange);"><i class="fas fa-brain me-2"></i> AI Fleet & Maintenance Insights</h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted);">Real-time intelligence generated from current bus, repair, and seat reservation data</p>
+        </div>
+        <span class="badge-status badge-active" style="background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981;">
+          <i class="fas fa-check-circle me-1"></i> Live Data Analysis
+        </span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;" id="adminSmartInsightsGrid">
+        <!-- Dynamic Insights Populated by JS -->
+      </div>
+    </div>
+
+    <!-- BUS MAINTENANCE OVERVIEW TABLE -->
+    <div class="glass-card" style="padding: 28px; margin-bottom: 36px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+        <h3 style="font-size: 1.2rem;"><i class="fas fa-tools text-orange me-2"></i> Bus Maintenance & Service History Overview</h3>
+        <a href="staff.html" class="btn-busease-secondary" style="font-size: 0.85rem;">Manage Repairs in Staff Portal →</a>
+      </div>
+
+      <div class="custom-table-container">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Bus Number</th>
+              <th>Driver</th>
+              <th>Last Service Date</th>
+              <th>Days Since Service</th>
+              <th>Maintenance Status</th>
+              <th>Next Service Due</th>
+              <th>Service Count</th>
+            </tr>
+          </thead>
+          <tbody id="adminMaintenanceTable">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -108,46 +154,8 @@
       <!-- BUS FLEET UTILIZATION SUMMARY -->
       <div class="glass-card" style="padding: 28px;">
         <h3 style="font-size: 1.2rem; margin-bottom: 20px;"><i class="fas fa-chart-pie text-orange me-2"></i> Fleet Utilization</h3>
-        <div style="display: flex; flex-direction: column; gap: 16px;">
-          <div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px;">
-              <span>BUS-05 (ECR Express)</span>
-              <span class="text-orange" style="font-weight: 700;">70% Occupied</span>
-            </div>
-            <div style="height: 8px; background: var(--bg-deep); border-radius: 4px; overflow: hidden;">
-              <div style="width: 70%; height: 100%; background: var(--color-orange);"></div>
-            </div>
-          </div>
-
-          <div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px;">
-              <span>BUS-08 (Pondicherry Direct)</span>
-              <span style="font-weight: 700; color: #f87171;">100% FULL</span>
-            </div>
-            <div style="height: 8px; background: var(--bg-deep); border-radius: 4px; overflow: hidden;">
-              <div style="width: 100%; height: 100%; background: #f87171;"></div>
-            </div>
-          </div>
-
-          <div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px;">
-              <span>BUS-02 (Villupuram)</span>
-              <span style="font-weight: 700; color: #10b981;">87% Occupied</span>
-            </div>
-            <div style="height: 8px; background: var(--bg-deep); border-radius: 4px; overflow: hidden;">
-              <div style="width: 87%; height: 100%; background: #10b981;"></div>
-            </div>
-          </div>
-
-          <div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px;">
-              <span>BUS-01 (Campus Shuttle)</span>
-              <span style="font-weight: 700; color: #60a5fa;">62% Occupied</span>
-            </div>
-            <div style="height: 8px; background: var(--bg-deep); border-radius: 4px; overflow: hidden;">
-              <div style="width: 62%; height: 100%; background: #60a5fa;"></div>
-            </div>
-          </div>
+        <div style="display: flex; flex-direction: column; gap: 16px;" id="adminUtilizationList">
+          <!-- Populated by JS -->
         </div>
 
         <a href="analytics.html" class="btn-busease-secondary" style="width: 100%; margin-top: 24px; justify-content: center;">
@@ -172,6 +180,41 @@
       document.getElementById('admBuses').textContent = `${buses.length} Buses`;
       document.getElementById('admReservations').textContent = `${bookings.length} Logged`;
 
+      const underRepairCount = buses.filter(b => b.status === 'Under Repair' || b.status === 'Under Maintenance' || b.repairStatus === 'Under Repair').length;
+      document.getElementById('admUnderRepair').textContent = `${underRepairCount} Buses`;
+
+      const dueSoonCount = buses.filter(b => {
+        const statusObj = getBusMaintenanceStatus(b);
+        return statusObj.label === 'Service Due Soon';
+      }).length;
+      document.getElementById('admDueSoon').textContent = `${dueSoonCount} Buses`;
+
+      // Render Smart Insights
+      renderAdminInsights(buses, bookings);
+
+      // Render Maintenance Table
+      const maintTbody = document.getElementById('adminMaintenanceTable');
+      maintTbody.innerHTML = buses.map(b => {
+        const daysSince = calculateDaysSinceService(b.lastServiceDate);
+        const maintStatus = getBusMaintenanceStatus(b);
+        return `
+          <tr>
+            <td><strong class="text-orange">${b.number || b.id}</strong> <span style="font-size: 0.78rem; color: var(--text-muted);">(${b.id})</span></td>
+            <td>${b.driver}</td>
+            <td>${b.lastServiceDate || '05-Aug-2026'}</td>
+            <td><strong style="color: var(--text-white);">${daysSince} Days</strong></td>
+            <td>
+              <span class="badge-status ${maintStatus.badgeClass}">
+                <i class="fas ${maintStatus.icon} me-1"></i> ${maintStatus.label}
+              </span>
+            </td>
+            <td>${b.nextServiceDate || '05-Sep-2026'}</td>
+            <td><strong style="color: var(--color-orange);">${b.serviceCount || 8}</strong></td>
+          </tr>
+        `;
+      }).join('');
+
+      // Render Reservations Table
       const tbody = document.getElementById('adminBookingsTable');
       tbody.innerHTML = bookings.map(b => `
         <tr>
@@ -183,6 +226,85 @@
           <td><span class="badge-status badge-${b.status.toLowerCase()}">${b.status}</span></td>
         </tr>
       `).join('');
+
+      // Render Utilization List
+      const utilList = document.getElementById('adminUtilizationList');
+      utilList.innerHTML = buses.slice(0, 4).map(b => {
+        const occ = Math.round((b.booked / b.capacity) * 100);
+        let color = 'var(--color-orange)';
+        if (occ >= 100) color = '#f87171';
+        else if (occ >= 80) color = '#10b981';
+
+        return `
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px;">
+              <span>${b.number || b.id} (${b.name})</span>
+              <span style="font-weight: 700; color: ${color};">${occ}% Occupied</span>
+            </div>
+            <div style="height: 8px; background: var(--bg-deep); border-radius: 4px; overflow: hidden;">
+              <div style="width: ${occ}%; height: 100%; background: ${color};"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderAdminInsights(buses, bookings) {
+      const insightsGrid = document.getElementById('adminSmartInsightsGrid');
+      
+      const underRepairBuses = buses.filter(b => b.status === 'Under Repair' || b.repairStatus === 'Under Repair');
+      const maxCapBus = [...buses].sort((a, b) => b.available - a.available)[0];
+      const maxServiceBus = [...buses].sort((a, b) => (b.serviceCount || 0) - (a.serviceCount || 0))[0];
+
+      let insightsHTML = '';
+
+      // Insight 1: Fleet Maintenance
+      if (underRepairBuses.length > 0) {
+        insightsHTML += `
+          <div class="glass-card" style="padding: 16px; border-left: 4px solid #f87171;">
+            <div style="font-size: 0.8rem; color: #f87171; font-weight: 700; margin-bottom: 4px;">🔧 MAINTENANCE WARNING</div>
+            <div style="font-size: 0.9rem; color: var(--text-white);">
+              <strong>${underRepairBuses.length} bus(es) (${underRepairBuses.map(b => b.number || b.id).join(', ')})</strong> currently under repair/maintenance. Alternative recommendations active.
+            </div>
+          </div>
+        `;
+      } else {
+        insightsHTML += `
+          <div class="glass-card" style="padding: 16px; border-left: 4px solid #10b981;">
+            <div style="font-size: 0.8rem; color: #10b981; font-weight: 700; margin-bottom: 4px;">🟢 FLEET HEALTH EXCELLENT</div>
+            <div style="font-size: 0.9rem; color: var(--text-white);">
+              All <strong>${buses.length} campus buses</strong> are fully operational and ready for student transport.
+            </div>
+          </div>
+        `;
+      }
+
+      // Insight 2: Service History Record
+      if (maxServiceBus) {
+        const daysSince = calculateDaysSinceService(maxServiceBus.lastServiceDate);
+        insightsHTML += `
+          <div class="glass-card" style="padding: 16px; border-left: 4px solid var(--color-orange);">
+            <div style="font-size: 0.8rem; color: var(--color-orange); font-weight: 700; margin-bottom: 4px;">🛠️ SERVICE RECORD INSIGHT</div>
+            <div style="font-size: 0.9rem; color: var(--text-white);">
+              <strong>${maxServiceBus.number || maxServiceBus.id}</strong> has been serviced <strong>${maxServiceBus.serviceCount || 8} times</strong>. It has been <strong>${daysSince} days</strong> since its last service.
+            </div>
+          </div>
+        `;
+      }
+
+      // Insight 3: Capacity & Demand
+      if (maxCapBus) {
+        insightsHTML += `
+          <div class="glass-card" style="padding: 16px; border-left: 4px solid #60a5fa;">
+            <div style="font-size: 0.8rem; color: #60a5fa; font-weight: 700; margin-bottom: 4px;">📊 SEAT CAPACITY INSIGHT</div>
+            <div style="font-size: 0.9rem; color: var(--text-white);">
+              <strong>${maxCapBus.number || maxCapBus.id} (${maxCapBus.name})</strong> has the highest available seat capacity (<strong>${maxCapBus.available} seats available</strong>).
+            </div>
+          </div>
+        `;
+      }
+
+      insightsGrid.innerHTML = insightsHTML;
     }
 
     function resetDemoData() {

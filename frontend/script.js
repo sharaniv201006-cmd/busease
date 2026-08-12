@@ -14,14 +14,14 @@ const BUSEASE_STORAGE_KEYS = {
 
 // Realistic Seed Datasets
 const SEED_BUSES = [
-  { id: 'BUS-05', number: 'BUS-05', name: 'AC College Express', route: 'Pondicherry → College', departure: '08:00 AM', returnTime: '04:30 PM', capacity: 40, available: 12, booked: 28, status: 'On Route', driver: 'Arun Kumar', driverId: 'DRV-101' },
-  { id: 'BUS-01', number: 'BUS-01', name: 'Pondicherry Campus Shuttle', route: 'Pondicherry → College', departure: '08:15 AM', returnTime: '04:45 PM', capacity: 40, available: 15, booked: 25, status: 'Arrived', driver: 'Murugan', driverId: 'DRV-102' },
-  { id: 'BUS-02', number: 'BUS-02', name: 'Villupuram Express', route: 'Villupuram → College', departure: '09:15 AM', returnTime: '05:15 PM', capacity: 40, available: 5, booked: 35, status: 'On Route', driver: 'Selvam', driverId: 'DRV-103' },
-  { id: 'BUS-03', number: 'BUS-03', name: 'Cuddalore Superfast', route: 'Cuddalore → College', departure: '07:30 AM', returnTime: '04:30 PM', capacity: 40, available: 20, booked: 20, status: 'On Route', driver: 'Karthik', driverId: 'DRV-104' },
-  { id: 'BUS-07', number: 'BUS-07', name: 'Lawspet Campus Bus', route: 'Pondicherry → College', departure: '08:20 AM', returnTime: '05:00 PM', capacity: 40, available: 16, booked: 24, status: 'On Route', driver: 'Rajesh', driverId: 'DRV-105' },
-  { id: 'BUS-08', number: 'BUS-08', name: 'Pondicherry Direct (FULL)', route: 'Pondicherry → College', departure: '08:00 AM', returnTime: '04:30 PM', capacity: 40, available: 0, booked: 40, status: 'On Route', driver: 'Prakash', driverId: 'DRV-106' },
-  { id: 'BUS-09', number: 'BUS-09', name: 'Marakkanam Coach', route: 'Marakkanam → College', departure: '07:15 AM', returnTime: '05:30 PM', capacity: 40, available: 8, booked: 32, status: 'On Route', driver: 'Senthil', driverId: 'DRV-107' },
-  { id: 'BUS-12', number: 'BUS-12', name: 'Tindivanam Highway Liner', route: 'Tindivanam → College', departure: '07:20 AM', returnTime: '04:30 PM', capacity: 40, available: 25, booked: 15, status: 'Arrived', driver: 'Venkatesh', driverId: 'DRV-108' }
+  { id: 'BUS-05', number: '53-ENGG', name: 'AC College Express', route: 'Pondicherry → College', departure: '08:00 AM', returnTime: '04:30 PM', capacity: 40, available: 12, booked: 28, status: 'On Route', driver: 'Murugan', driverId: 'DRV-101', driverExp: '8 Years', currentStop: 'Lawspet Gate', nextStop: 'College Main Gate', eta: '5 min', distanceKm: 0.85, lastServiceDate: '2026-08-05', serviceCount: 8, nextServiceDate: '2026-09-05', serviceCenter: 'ABC Motors', serviceType: 'Regular Maintenance', serviceStatus: 'Completed', repairStatus: 'None', repairStartDate: null, repairReason: null, expectedReturnDate: null, repairServiceCenter: null },
+  { id: 'BUS-01', number: '57-ENGG', name: 'Pondicherry Campus Shuttle', route: 'Pondicherry → College', departure: '08:15 AM', returnTime: '04:45 PM', capacity: 40, available: 15, booked: 25, status: 'Arrived', driver: 'Arun Kumar', driverId: 'DRV-102', driverExp: '6 Years', currentStop: 'Campus Gate 1', nextStop: 'Main Auditorium', eta: '2 min', distanceKm: 0.4, lastServiceDate: '2026-08-01', serviceCount: 12, nextServiceDate: '2026-09-01', serviceCenter: 'Campus Auto Care', serviceType: 'Oil & Filter Change', serviceStatus: 'Completed', repairStatus: 'None', repairStartDate: null, repairReason: null, expectedReturnDate: null, repairServiceCenter: null },
+  { id: 'BUS-02', number: '02-VILL', name: 'Villupuram Express', route: 'Villupuram → College', departure: '09:15 AM', returnTime: '05:15 PM', capacity: 40, available: 5, booked: 35, status: 'On Route', driver: 'Selvam', driverId: 'DRV-103', driverExp: '10 Years', currentStop: 'Vikravandi Toll', nextStop: 'College Main Gate', eta: '18 min', distanceKm: 12.5, lastServiceDate: '2026-07-20', serviceCount: 15, nextServiceDate: '2026-08-15', serviceCenter: 'Villupuram Fleet Hub', serviceType: 'Brake Pad Replacement', serviceStatus: 'Completed', repairStatus: 'None', repairStartDate: null, repairReason: null, expectedReturnDate: null, repairServiceCenter: null },
+  { id: 'BUS-03', number: '03-CUDD', name: 'Cuddalore Superfast', route: 'Cuddalore → College', departure: '07:30 AM', returnTime: '04:30 PM', capacity: 40, available: 20, booked: 20, status: 'On Route', driver: 'Karthik', driverId: 'DRV-104', driverExp: '5 Years', currentStop: 'Kirumampakkam', nextStop: 'College Main Gate', eta: '12 min', distanceKm: 8.2, lastServiceDate: '2026-07-15', serviceCount: 6, nextServiceDate: '2026-08-15', serviceCenter: 'Cuddalore Auto Works', serviceType: 'Tire Rotation & Alignment', serviceStatus: 'Completed', repairStatus: 'None', repairStartDate: null, repairReason: null, expectedReturnDate: null, repairServiceCenter: null },
+  { id: 'BUS-07', number: '07-LAWS', name: 'Lawspet Campus Bus', route: 'Pondicherry → College', departure: '08:20 AM', returnTime: '05:00 PM', capacity: 40, available: 16, booked: 24, status: 'On Route', driver: 'Rajesh', driverId: 'DRV-105', driverExp: '7 Years', currentStop: 'ECE Department', nextStop: 'College Main Gate', eta: '6 min', distanceKm: 1.1, lastServiceDate: '2026-08-07', serviceCount: 10, nextServiceDate: '2026-09-07', serviceCenter: 'ABC Motors', serviceType: 'AC System Overhaul', serviceStatus: 'Completed', repairStatus: 'None', repairStartDate: null, repairReason: null, expectedReturnDate: null, repairServiceCenter: null },
+  { id: 'BUS-08', number: '08-FULL', name: 'Pondicherry Direct (FULL)', route: 'Pondicherry → College', departure: '08:00 AM', returnTime: '04:30 PM', capacity: 40, available: 0, booked: 40, status: 'On Route', driver: 'Prakash', driverId: 'DRV-106', driverExp: '9 Years', currentStop: 'Gorimedu Junction', nextStop: 'College Main Gate', eta: '4 min', distanceKm: 0.6, lastServiceDate: '2026-08-02', serviceCount: 14, nextServiceDate: '2026-09-02', serviceCenter: 'Express Fleet Services', serviceType: 'General Servicing', serviceStatus: 'Completed', repairStatus: 'None', repairStartDate: null, repairReason: null, expectedReturnDate: null, repairServiceCenter: null },
+  { id: 'BUS-09', number: '09-MARA', name: 'Marakkanam Coach', route: 'Marakkanam → College', departure: '07:15 AM', returnTime: '05:30 PM', capacity: 40, available: 8, booked: 32, status: 'On Route', driver: 'Senthil', driverId: 'DRV-107', driverExp: '11 Years', currentStop: 'ECR Checkpost', nextStop: 'College Main Gate', eta: '15 min', distanceKm: 9.8, lastServiceDate: '2026-07-10', serviceCount: 18, nextServiceDate: '2026-08-10', serviceCenter: 'ECR Auto Garage', serviceType: 'Engine Tuning', serviceStatus: 'Completed', repairStatus: 'None', repairStartDate: null, repairReason: null, expectedReturnDate: null, repairServiceCenter: null },
+  { id: 'BUS-12', number: '12-TIND', name: 'Tindivanam Highway Liner', route: 'Tindivanam → College', departure: '07:20 AM', returnTime: '04:30 PM', capacity: 40, available: 25, booked: 15, status: 'Arrived', driver: 'Venkatesh', driverId: 'DRV-108', driverExp: '12 Years', currentStop: 'Gate 2 Bay', nextStop: 'Campus Terminal', eta: '0 min', distanceKm: 0.1, lastServiceDate: '2026-08-04', serviceCount: 9, nextServiceDate: '2026-09-04', serviceCenter: 'Tindivanam Fleet Hub', serviceType: 'Brake Inspection', serviceStatus: 'Completed', repairStatus: 'None', repairStartDate: null, repairReason: null, expectedReturnDate: null, repairServiceCenter: null }
 ];
 
 const DEMO_USERS = {
@@ -538,6 +538,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const userEmail = document.querySelectorAll('.active-user-email');
     userEmail.forEach(el => el.textContent = user.email || 'student@college.edu');
   }
+
+  // Initialize Floating Intelligent Assistant Widget
+  initAiChatbot();
 });
 
 // --- PWA SERVICE WORKER & APP INSTALL PROMPT ---
@@ -583,4 +586,117 @@ function triggerPwaInstall() {
       if (b) b.remove();
     });
   }
+}
+
+// ==========================================================================
+// FLOATING INTELLIGENT ASSISTANT WIDGET INITIALIZER
+// ==========================================================================
+function initAiChatbot() {
+  if (document.getElementById('busease-ai-fab')) return;
+
+  // Floating Action Button
+  const fab = document.createElement('button');
+  fab.id = 'busease-ai-fab';
+  fab.className = 'busease-ai-fab';
+  fab.title = 'Open BusEase Intelligent Assistant';
+  fab.innerHTML = `<i class="fas fa-robot"></i><span class="ai-badge">AI</span>`;
+  document.body.appendChild(fab);
+
+  // Chat Window Modal
+  const win = document.createElement('div');
+  win.id = 'ai-chat-window';
+  win.className = 'ai-chat-window';
+  win.innerHTML = `
+    <div class="ai-chat-header">
+      <div class="ai-chat-title">
+        <div class="ai-avatar-icon"><i class="fas fa-robot"></i></div>
+        <div>
+          <div style="font-weight: 800; font-size: 0.95rem; color: #fff;">BusEase Assistant</div>
+          <div style="font-size: 0.72rem; color: #10b981;"><i class="fas fa-circle me-1" style="font-size: 0.5rem;"></i> Active Data Engine</div>
+        </div>
+      </div>
+      <button type="button" id="closeAiChatBtn" style="background: transparent; border: none; color: #94A9BB; cursor: pointer; font-size: 1.2rem;">&times;</button>
+    </div>
+
+    <div class="ai-chat-messages" id="aiChatMessages">
+      <div class="ai-msg bot">
+        👋 Hi! I am your <strong>BusEase Intelligent Assistant</strong>.<br>
+        Ask me about your bus location, seat availability, last service date, repair status, or driver info!
+      </div>
+    </div>
+
+    <div class="ai-chips-wrapper">
+      <button type="button" class="ai-chip" onclick="sendQuickAiQuery('Where is my bus?')">📍 Where is my bus?</button>
+      <button type="button" class="ai-chip" onclick="sendQuickAiQuery('When was Bus 53 last serviced?')">🔧 Bus 53 Service Date</button>
+      <button type="button" class="ai-chip" onclick="sendQuickAiQuery('Is Bus 53 available?')">💺 Seats Available</button>
+      <button type="button" class="ai-chip" onclick="sendQuickAiQuery('Is there an alternative bus?')">🚌 Alternative Bus</button>
+      <button type="button" class="ai-chip" onclick="sendQuickAiQuery('Who is driving my bus?')">👨‍✈️ My Driver</button>
+    </div>
+
+    <div class="ai-chat-input-area">
+      <input type="text" id="aiChatInput" class="ai-chat-input" placeholder="Ask about your bus or route..." onkeypress="handleAiInputKeyPress(event)">
+      <button type="button" onclick="submitAiChatMessage()" class="ai-chat-send"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  `;
+  document.body.appendChild(win);
+
+  fab.onclick = () => win.classList.toggle('open');
+  document.getElementById('closeAiChatBtn').onclick = () => win.classList.remove('open');
+}
+
+function sendQuickAiQuery(text) {
+  const input = document.getElementById('aiChatInput');
+  if (input) {
+    input.value = text;
+    submitAiChatMessage();
+  }
+}
+
+function handleAiInputKeyPress(e) {
+  if (e.key === 'Enter') {
+    submitAiChatMessage();
+  }
+}
+
+function submitAiChatMessage() {
+  const input = document.getElementById('aiChatInput');
+  const msgContainer = document.getElementById('aiChatMessages');
+  if (!input || !msgContainer) return;
+
+  const text = input.value.trim();
+  if (!text) return;
+
+  // Append user message
+  const userMsgDiv = document.createElement('div');
+  userMsgDiv.className = 'ai-msg user';
+  userMsgDiv.textContent = text;
+  msgContainer.appendChild(userMsgDiv);
+
+  input.value = '';
+  msgContainer.scrollTop = msgContainer.scrollHeight;
+
+  // Get current user context
+  const currentUser = BusEaseState.getUser();
+  const response = getAIResponse(text, currentUser);
+
+  // Simulate typing delay
+  setTimeout(() => {
+    const botMsgDiv = document.createElement('div');
+    botMsgDiv.className = 'ai-msg bot';
+    botMsgDiv.innerHTML = response.text.replace(/\n/g, '<br>');
+
+    if (response.action) {
+      const actBtn = document.createElement('div');
+      actBtn.style.marginTop = '10px';
+      if (response.action.type === 'TRACK_BUS' || response.action.type === 'TRACK_ALT') {
+        actBtn.innerHTML = `<a href="search.html?track=${response.action.busId}" class="btn-busease-primary" style="padding: 6px 12px; font-size: 0.78rem; text-decoration: none; display: inline-block;"><i class="fas fa-map-marked-alt me-1"></i> Track ${response.action.busId}</a>`;
+      } else if (response.action.type === 'RESERVE_BUS' || response.action.type === 'RESERVE_ALT') {
+        actBtn.innerHTML = `<a href="seats.html?bus=${response.action.busId}" class="btn-busease-primary" style="padding: 6px 12px; font-size: 0.78rem; text-decoration: none; display: inline-block;"><i class="fas fa-chair me-1"></i> Reserve Seat (${response.action.busId})</a>`;
+      }
+      botMsgDiv.appendChild(actBtn);
+    }
+
+    msgContainer.appendChild(botMsgDiv);
+    msgContainer.scrollTop = msgContainer.scrollHeight;
+  }, 400);
 }

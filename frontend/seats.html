@@ -189,23 +189,36 @@
       const occupancy = Math.round((bus.booked / bus.capacity) * 100);
       document.getElementById('busOccupancyVal').textContent = `${occupancy}%`;
 
-      if (bus.available <= 0) {
+      const isUnderRepair = bus.status === 'Under Repair' || bus.status === 'Under Maintenance' || bus.repairStatus === 'Under Repair';
+
+      if (bus.available <= 0 || isUnderRepair) {
         document.getElementById('fullBusBanner').style.display = 'block';
         document.getElementById('seatSelectionArea').style.display = 'none';
 
-        // Populate alternative buses
-        const alternatives = buses.filter(b => b.id !== bus.id && b.available > 0);
+        if (isUnderRepair) {
+          const fullTitle = document.querySelector('#fullBusBanner h3') || document.getElementById('fullBusBanner');
+          if (fullTitle) {
+            fullTitle.innerHTML = `<i class="fas fa-wrench me-1"></i> Bus ${bus.number || bus.id} is Currently Under Repair`;
+          }
+        }
+
+        // Populate alternative buses using strict engine
+        const alternatives = getAlternativeBuses(bus.id);
         const altContainer = document.getElementById('alternativeBusesList');
-        altContainer.innerHTML = alternatives.map(alt => `
-          <div class="glass-card" style="padding: 16px;">
-            <div style="font-weight: 700; font-size: 1.1rem; color: var(--color-orange); margin-bottom: 4px;">${alt.id} - ${alt.name}</div>
-            <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">Departure: ${alt.departure} • Route: ${alt.route}</div>
-            <div style="font-size: 0.85rem; font-weight: 700; color: #10b981; margin-bottom: 12px;">${alt.available} Seats Available</div>
-            <a href="seats.html?bus=${alt.id}" class="btn-busease-primary" style="width: 100%; padding: 8px; font-size: 0.85rem;">
-              BOOK THIS BUS <i class="fas fa-arrow-right ms-1"></i>
-            </a>
-          </div>
-        `).join('');
+        if (alternatives.length > 0) {
+          altContainer.innerHTML = alternatives.map(alt => `
+            <div class="glass-card" style="padding: 16px; border: 1px solid var(--border-orange);">
+              <div style="font-weight: 700; font-size: 1.1rem; color: var(--color-orange); margin-bottom: 4px;">${alt.number || alt.id} - ${alt.name}</div>
+              <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">Departure: ${alt.departure} • Route: ${alt.route} • ETA: ${alt.eta}</div>
+              <div style="font-size: 0.85rem; font-weight: 700; color: #10b981; margin-bottom: 12px;">${alt.available} Seats Available</div>
+              <a href="seats.html?bus=${alt.id}" class="btn-busease-primary" style="width: 100%; padding: 8px; font-size: 0.85rem;">
+                BOOK THIS ALTERNATIVE BUS <i class="fas fa-arrow-right ms-1"></i>
+              </a>
+            </div>
+          `).join('');
+        } else {
+          altContainer.innerHTML = `<div style="color: #f87171; font-weight: 700;">No active alternative buses available on this route.</div>`;
+        }
       } else {
         document.getElementById('fullBusBanner').style.display = 'none';
         document.getElementById('seatSelectionArea').style.display = 'grid';
