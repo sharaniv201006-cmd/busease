@@ -194,6 +194,7 @@ class BusEaseState {
     setTimeout(() => {
       window.location.href = 'login.html';
     }, 300);
+  }
 }
 
 // ==========================================================================
